@@ -1,0 +1,14 @@
+//
+// Created by Rafael on 17/12/2023.
+//
+
+#ifndef FLIGHT_MANAGEMENT_SYSTEM_FLIGHT_H
+#define FLIGHT_MANAGEMENT_SYSTEM_FLIGHT_H
+
+
+class Flight {
+
+};
+
+
+#endif //FLIGHT_MANAGEMENT_SYSTEM_FLIGHT_H
