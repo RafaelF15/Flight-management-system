@@ -1,0 +1,4 @@
+ToolSet: 3.4.9 (local)@D:\IDEs
+Options: 
+
+Options:-DCMAKE_MAKE_PROGRAM=/CLion 2023.2.2/bin/ninja/cygwin/x64/ninja.exe

@@ -1,0 +1,3 @@
+/cygdrive/d/CLionProjects/Flight management system/cmake-build-debug/CMakeFiles/Flight_management_system.dir
+/cygdrive/d/CLionProjects/Flight management system/cmake-build-debug/CMakeFiles/edit_cache.dir
+/cygdrive/d/CLionProjects/Flight management system/cmake-build-debug/CMakeFiles/rebuild_cache.dir
