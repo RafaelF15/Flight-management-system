@@ -16,9 +16,9 @@ using namespace std;
 
 class Reading {
 public:
-    static void readAirports(Graph<Airport> &g);
+    static void readAirports(Graph<Airport> &g, unordered_map<string, Airport>& m);
     static void readAirlines(unordered_map<string, Airline>& m) ;
-    void readFlights(Graph<Airport> &g);
+    static void readFlights(Graph<Airport> &g, unordered_map<string,Airport>& m, unordered_map<string, Airline>& a);
 
 };
 

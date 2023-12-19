@@ -11,8 +11,11 @@ using namespace std;
 int main() {
     Graph<Airport> g;
     unordered_map<string, Airline> airlineMap;
-
-    Reading::readAirports(g);
+    unordered_map<string, Airport> airportMap;
+    Reading::readAirports(g, airportMap);
     Reading::readAirlines(airlineMap);
+    Reading::readFlights(g, airportMap, airlineMap);
+
+    // All read functions are now functional
     
 }

@@ -27,6 +27,18 @@ public:
                longitude == other.longitude;
     }
 
+    const string &getCode() const;
+
+    const string &getName() const;
+
+    const string &getCity() const;
+
+    const string &getCountry() const;
+
+    double getLatitude() const;
+
+    double getLongitude() const;
+
 };
 
 #endif //FLIGHT_MANAGEMENT_SYSTEM_AIRPORT_H

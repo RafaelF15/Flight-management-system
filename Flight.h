@@ -12,7 +12,9 @@
 class Flight {
     Airport source, target;
     Airline airline;
-
+public:
+    Flight(Airport source, Airport target, Airline airline) : source(source), target(target), airline(airline) {}
+    void printFlight();
 };
 
 

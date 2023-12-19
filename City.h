@@ -15,6 +15,7 @@ class City {
     string country;
     vector<Airport> airports;
 public:
+
     City(string name, string country, vector<Airport> airports) : name(name), country(country), airports(airports) {}
 
 };
