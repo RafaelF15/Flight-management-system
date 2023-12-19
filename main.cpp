@@ -9,13 +9,13 @@
 using namespace std;
 
 int main() {
-    Graph<Airport> g;
-    unordered_map<string, Airline> airlineMap;
-    unordered_map<string, Airport> airportMap;
-    Reading::readAirports(g, airportMap);
-    Reading::readAirlines(airlineMap);
-    Reading::readFlights(g, airportMap, airlineMap);
+    Graph<Airport> g; // Main graph, has airports as vertexes and flights as edges, edge weight has been adapted to save the airline that is responsible for the flight;
+    unordered_map<string, Airline> airlineMap; // Find airline by code
+    unordered_map<string, Airport> airportMap; // Find airport by code
+    Reading::readAirports(g, airportMap); // Reads airports from files and adds them to the graph as vertexes (also puts them in the airline map for fast searching if needed)
+    Reading::readAirlines(airlineMap); // Reads airlines and puts them on the airline map for fast searching if needed
+    Reading::readFlights(g, airportMap, airlineMap); // Reads flights from the file, adds them to the graph as vertexes, uses the two maps mentioned earlier to get airlines or airports from their code;
 
     // All read functions are now functional
-    
+
 }
