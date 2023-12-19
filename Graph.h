@@ -41,13 +41,13 @@ public:
 template <class T>
 class Edge {
     Vertex<T> *dest;
-    double weight;
+    string weight;
 public:
-    Edge(Vertex<T> *d, double w);
+    Edge(Vertex<T> *d, string w);
     Vertex<T> *getDest() const;
     void setDest(Vertex<T> *dest);
-    double getWeight() const;
-    void setWeight(double weight);
+    string getWeight() const;
+    void setWeight(string weight);
     friend class Graph<T>;
     friend class Vertex<T>;
 };
@@ -69,7 +69,7 @@ template <class T>
 Vertex<T>::Vertex(T in): info(in) {}
 
 template <class T>
-Edge<T>::Edge(Vertex<T> *d, double w): dest(d), weight(w) {}
+Edge<T>::Edge(Vertex<T> *d, string w): dest(d), weight(w) {}
 
 
 template <class T>
@@ -113,12 +113,12 @@ void Edge<T>::setDest(Vertex<T> *d) {
 }
 
 template<class T>
-double Edge<T>::getWeight() const {
+string Edge<T>::getWeight() const {
     return weight;
 }
 
 template<class T>
-void Edge<T>::setWeight(double weight) {
+void Edge<T>::setWeight(string weight) {
     Edge::weight = weight;
 }
 

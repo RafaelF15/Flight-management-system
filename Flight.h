@@ -12,6 +12,7 @@
 class Flight {
     Airport source, target;
     Airline airline;
+
 };
 
 

@@ -15,8 +15,17 @@ class Airport {
     string country;
     double latitude;
     double longitude;
-
-    Airport(string code, string name, string city, string country, double latitude, double longitude) : code(code), name(name), city(city), country(country), latitude(latitude), longitude(longitude){}
+public:
+    Airport(string& code,string& name,string& city,string& country,double latitude,double longitude) : code(code), name(name), city(city), country(country), latitude(latitude), longitude(longitude) {}
+    void printAirport();
+    bool operator==(const Airport& other) const {
+        return code == other.code &&
+               name == other.name &&
+               city == other.city &&
+               country == other.country &&
+               latitude == other.latitude &&
+               longitude == other.longitude;
+    }
 
 };
 

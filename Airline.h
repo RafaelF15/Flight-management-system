@@ -13,9 +13,9 @@ class Airline {
     string name;
     string callsign;
     string country;
-
+public:
     Airline(string code, string name, string callsign, string country) :code(code), name(name), callsign(callsign), country(country){}
-
+    void printAirline();
 };
 
 
