@@ -14,4 +14,7 @@ add_executable(Flight_management_system main.cpp
         City.h
         Graph.h
         Reading.cpp
-        Reading.h)
+        Reading.h
+        Statistics.cpp
+        Statistics.h
+)

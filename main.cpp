@@ -5,6 +5,7 @@
 #include "City.h"
 #include "Flight.h"
 #include "Reading.h"
+#include "Statistics.h"
 #include <unordered_map>
 using namespace std;
 
@@ -15,7 +16,8 @@ int main() {
     Reading::readAirports(g, airportMap); // Reads airports from files and adds them to the graph as vertexes (also puts them in the airline map for fast searching if needed)
     Reading::readAirlines(airlineMap); // Reads airlines and puts them on the airline map for fast searching if needed
     Reading::readFlights(g, airportMap, airlineMap); // Reads flights from the file, adds them to the graph as vertexes, uses the two maps mentioned earlier to get airlines or airports from their code;
-
     // All read functions are now functional
 
+    Statistics::getNumFlights(g);
+    Statistics::getNumAirports(g);
 }
