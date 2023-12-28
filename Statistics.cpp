@@ -3,6 +3,7 @@
 //
 
 #include "Statistics.h"
+#include <unordered_set>
 
 int Statistics::getNumAirports(Graph<Airport> g) {
     cout << '\n' << "There are " << g.getNumVertex() << " airports available." << endl;
@@ -98,5 +99,32 @@ int Statistics::getNumFlightsFromCityToDifferentCountries(Graph<Airport> g, unor
     } catch (const out_of_range &e)
     {
         cerr << "The city does not exist.";
+    }
+}
+
+int Statistics::getNumOfReachableAirportsFromAirport(Graph<Airport> g, unordered_map<string, Airport> airportMap, string code) {
+    for(Vertex<Airport>* v1 : g.getVertexSet()){
+        v1->setVisited(false);
+    }
+    int count = 0;
+    vector<Airport> airports;
+    Vertex<Airport>* s = g.findVertex(airportMap.at(code));
+
+    dfsReachAirportFromAirport(s, airports);
+    count = airports.size();
+    cout << '\n' << "There are " << count << " reachable airports from: " << s->getInfo().getName() << endl;
+    for(Airport a : airports){
+        cout << '\n' << a.getName() << endl;
+    }
+    return count;
+}
+
+void Statistics::dfsReachAirportFromAirport(Vertex<Airport> *v, vector<Airport> &airports) {
+    v->setVisited(true);
+    airports.push_back(v->getInfo());
+    for(Edge<Airport> e : v->getAdj()){
+        if(!e.getDest()->isVisited()){
+            dfsReachAirportFromAirport(e.getDest(), airports);
+        }
     }
 }
