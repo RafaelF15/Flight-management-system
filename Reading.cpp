@@ -84,6 +84,7 @@ void Reading::readFlights(Graph<Airport> &g, unordered_map<string, Airport>& m, 
             Airport s = m.at(source);
             Airport t = m.at(target);
             Flight f = Flight(s, t, a.at(airline));
+            a.at(airline).addFlight();
             g.addEdge(s, t, f);
         }
     }

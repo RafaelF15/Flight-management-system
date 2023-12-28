@@ -25,4 +25,9 @@ int main() {
     Statistics::getNumFlightsFromAirport(g, airportMap, "ORY");
     Statistics::getNumFlightsFromAirport(g, airportMap, "CDG");
     Statistics::getNumFlightsPerCity(g, cityMap, "Paris", "France");
+
+    Statistics::getNumFlightsPerAirline(airlineMap, "IBE");
+
+    Statistics::getNumFlightsFromAirportToDifferentCountries(g, airportMap, "JFK");
+    Statistics::getNumFlightsFromCityToDifferentCountries(g, cityMap, "Paris", "France");
 }
