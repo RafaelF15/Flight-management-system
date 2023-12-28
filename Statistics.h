@@ -18,7 +18,8 @@ class Statistics {
 public:
     static int getNumAirports(Graph<Airport> g);
     static int getNumFlights(Graph<Airport> g);
-
+    static int getNumFlightsFromAirport(Graph<Airport> g,unordered_map<string,Airport> airportMap, string code);
+    static int getNumFlightsPerCity(Graph<Airport> g, unordered_map<string, City> citymap, string cityName, string country);
 };
 
 

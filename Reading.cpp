@@ -23,7 +23,7 @@ using namespace std;
  * Read the flights -> they are the Edges of the graph;
  */
 
-void Reading::readAirports(Graph<Airport> &g, unordered_map<string, Airport>& m) {
+void Reading::readAirports(Graph<Airport> &g, unordered_map<string, Airport>& m, unordered_map<string,City>& cityMap) {
     string code, name, city, country, header;
     double latitude, longitude;
     ifstream file("../Data/airports.csv");
@@ -41,6 +41,15 @@ void Reading::readAirports(Graph<Airport> &g, unordered_map<string, Airport>& m)
             Airport a = Airport(code, name, city, country, latitude, longitude);
             m.emplace(code, a);
             g.addVertex(a);
+            if(cityMap.find(city + country) != cityMap.end()){
+                cityMap.at(city + country).addAirport(a);
+            }
+            else{
+                vector<Airport> v;
+                v.push_back(a);
+                City c = City(city, country, v);
+                cityMap.emplace(city + country, c);
+            }
         }
     }
 }
