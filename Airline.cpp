@@ -25,3 +25,8 @@ const string &Airline::getCallsign() const {
 const string &Airline::getCountry() const {
     return country;
 }
+
+void Airline::setCode(string code){this->code = code;}
+void Airline::setName(string name){this->name = name;}
+void Airline::setCallsign(string callsign){this->callsign = callsign;}
+void Airline::setCountry(string country){this->country = country;}

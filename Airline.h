@@ -24,6 +24,12 @@ public:
     const string &getCallsign() const;
 
     const string &getCountry() const;
+
+    void setCode(string code);
+    void setName(string name);
+    void setCallsign(string callsign);
+    void setCountry(string country);
+
 };
 
 

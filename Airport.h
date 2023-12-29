@@ -25,7 +25,7 @@ public:
                country == other.country &&
                latitude == other.latitude &&
                longitude == other.longitude;
-    }
+    } //implementa o comparador == para ver se dois aeroportos são iguais
 
     const string &getCode() const;
 
@@ -38,6 +38,13 @@ public:
     double getLatitude() const;
 
     double getLongitude() const;
+
+    void setCode(string code);
+    void setName(string name);
+    void setCity(string city);
+    void setCountry(string country);
+    void setLatitude(double latitude);
+    void setLongitude(double longitude);
 
 };
 

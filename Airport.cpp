@@ -35,3 +35,9 @@ double Airport::getLongitude() const {
     return longitude;
 }
 
+void Airport :: setCode(string code){this->code = code;}
+void Airport :: setName(string name){this->name = name;}
+void Airport :: setCity(string city){this->city = city;}
+void Airport ::setCountry(string country) {this->country = country;}
+void Airport ::setLatitude(double latitude) {this->latitude = latitude;}
+void Airport ::setLongitude(double longitude) {this->longitude = longitude;}
