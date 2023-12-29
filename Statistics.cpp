@@ -113,9 +113,6 @@ int Statistics::getNumOfReachableAirportsFromAirport(Graph<Airport> g, unordered
     dfsReachAirportFromAirport(s, airports);
     count = airports.size();
     cout << '\n' << "There are " << count << " reachable airports from: " << s->getInfo().getName() << endl;
-    for(Airport a : airports){
-        cout << '\n' << a.getName() << endl;
-    }
     return count;
 }
 
@@ -127,4 +124,36 @@ void Statistics::dfsReachAirportFromAirport(Vertex<Airport> *v, vector<Airport> 
             dfsReachAirportFromAirport(e.getDest(), airports);
         }
     }
+}
+
+int Statistics::numReachableAirportsXFlights(Graph<Airport> g, unordered_map<string, Airport> airportMap, string code, int k) {
+    vector<Airport> res;
+    queue<pair<Vertex<Airport>*, int>> q;
+
+    for(Vertex<Airport>* v : g.getVertexSet()) v->setVisited(false);
+
+    Vertex<Airport>* s = g.findVertex(airportMap.at(code));
+
+    q.push({s, 0});
+    s->setVisited(true);
+
+    while (!q.empty()){
+        Vertex<Airport>* v = q.front().first;
+        int currentDistance = q.front().second;
+        q.pop();
+
+        if(currentDistance <= k){
+            res.push_back(v->getInfo());
+        }
+
+        for(Edge<Airport> e : v->getAdj()){
+            Vertex<Airport>* v1 = e.getDest();
+            if(!v1->isVisited()){
+                q.push({v1, currentDistance+1});
+                v1->setVisited(true);
+            }
+        }
+    }
+    cout << '\n' << "There are " << res.size() << " airports reachable from " << s->getInfo().getName() << " with " << k << " or less lay-overs" << endl;
+    return res.size();
 }

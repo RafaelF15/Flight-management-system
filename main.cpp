@@ -30,4 +30,5 @@ int main() {
     Statistics::getNumFlightsFromCityToDifferentCountries(g, cityMap, "Paris", "France");
 
     Statistics::getNumOfReachableAirportsFromAirport(g, airportMap, "SSR");
+    Statistics::numReachableAirportsXFlights(g, airportMap, "SSR", 2);
 }
