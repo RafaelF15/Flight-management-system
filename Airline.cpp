@@ -30,3 +30,12 @@ void Airline::setCode(string code){this->code = code;}
 void Airline::setName(string name){this->name = name;}
 void Airline::setCallsign(string callsign){this->callsign = callsign;}
 void Airline::setCountry(string country){this->country = country;}
+
+void Airline::addFlight() {
+    numFlights++;
+}
+
+int Airline::getNumFlights() const {
+    return numFlights;
+}
+

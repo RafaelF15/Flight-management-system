@@ -13,6 +13,7 @@ class Airline {
     string name;
     string callsign;
     string country;
+    int numFlights = 0;
 public:
     Airline(string code, string name, string callsign, string country) :code(code), name(name), callsign(callsign), country(country){}
     void printAirline();
@@ -25,11 +26,16 @@ public:
 
     const string &getCountry() const;
 
+
     void setCode(string code);
     void setName(string name);
     void setCallsign(string callsign);
     void setCountry(string country);
 
+
+    void addFlight();
+
+    int getNumFlights() const;
 };
 
 
