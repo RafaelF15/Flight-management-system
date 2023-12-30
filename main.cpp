@@ -31,4 +31,7 @@ int main() {
 
     Statistics::getNumOfReachableAirportsFromAirport(g, airportMap, "SSR");
     Statistics::numReachableAirportsXFlights(g, airportMap, "SSR", 2);
+
+    Statistics::findDiameter(g);
+    
 }

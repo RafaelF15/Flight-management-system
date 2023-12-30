@@ -27,6 +27,9 @@ public:
     static int getNumOfReachableAirportsFromAirport(Graph<Airport> g, unordered_map<string,Airport> airportMap, string code);
     static void dfsReachAirportFromAirport(Vertex<Airport>* v, vector<Airport>& airports);
     static int numReachableAirportsXFlights(Graph<Airport> g, unordered_map<string, Airport> airportMap, string code, int k);
+    static pair<int, vector<Airport>> maximumTripbfs(Graph<Airport> g, Vertex<Airport>* v);
+    static int findDiameter(Graph<Airport> g);
+
 };
 
 

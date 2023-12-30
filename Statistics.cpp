@@ -157,3 +157,54 @@ int Statistics::numReachableAirportsXFlights(Graph<Airport> g, unordered_map<str
     cout << '\n' << "There are " << res.size() << " airports reachable from " << s->getInfo().getName() << " with " << k << " or less lay-overs" << endl;
     return res.size();
 }
+
+pair<int, vector<Airport>> Statistics::maximumTripbfs(Graph<Airport> g, Vertex<Airport>* v) {
+    queue<pair<Vertex<Airport>*, int>> q;
+    for(Vertex<Airport>* v : g.getVertexSet()) v->setVisited(false);
+    Vertex<Airport>* s = g.findVertex(v->getInfo());
+    q.push({s, 0});
+    s->setVisited(true);
+    int distance = 0;
+    vector<Airport> airports;
+
+    while(!q.empty()){
+        Vertex<Airport>* v1 = q.front().first;
+        int currentDistance = q.front().second;
+        q.pop();
+        if(currentDistance > distance) {
+            distance = currentDistance;
+            airports.clear();
+            airports.push_back(v1->getInfo());
+        }
+        else if(currentDistance == distance){
+            airports.push_back(v1->getInfo());
+        }
+        for(Edge<Airport> e : v1->getAdj()){
+            Vertex<Airport>* v2 = e.getDest();
+            if(!v2->isVisited()){
+                q.push({v2, currentDistance+1});
+                v2->setVisited(true);
+            }
+        }
+    }
+    return {distance, airports};
+}
+
+int Statistics::findDiameter(Graph<Airport> g) {
+    int diameter = 0;
+    vector<Airport> airports;
+    Airport start = g.getVertexSet()[0]->getInfo();
+    for(Vertex<Airport>* v : g.getVertexSet()){
+        pair<int, vector<Airport>> p = maximumTripbfs(g, v);
+        if (diameter != max(diameter, p.first)){
+            diameter = max(diameter, p.first);
+            airports = p.second;
+            start = v->getInfo();
+        }
+    }
+    cout << '\n' <<"The maximum trip passes trough: " << diameter << " airports starting at: " << start.getName() << " and ending at one of the following: " << endl;
+    for(Airport a: airports){
+        cout << '\n' << a.getName() << endl;
+    }
+    return diameter;
+}
