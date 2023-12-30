@@ -26,8 +26,8 @@ public:
     static int getNumFlightsFromCityToDifferentCountries(Graph<Airport> g, unordered_map<string, City> cityMap, string cityName, string country);
     static int getNumOfReachableAirportsFromAirport(Graph<Airport> g, unordered_map<string,Airport> airportMap, string code);
     static void dfsReachAirportFromAirport(Vertex<Airport>* v, vector<Airport>& airports);
+
     static int numReachableAirportsXFlights(Graph<Airport> g, unordered_map<string, Airport> airportMap, string code, int k);
+    static int numReachableCitiesXFlights(Graph<Airport> g, unordered_map<string, Airport> airportMap, string code, int k);
+    static int numReachableCountriesXFlights(Graph<Airport> g, unordered_map<string, Airport> airportMap, string code, int k);
 };
-
-
-#endif //FLIGHT_MANAGEMENT_SYSTEM_STATISTICS_H
