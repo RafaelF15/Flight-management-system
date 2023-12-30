@@ -16,6 +16,7 @@ void getStatistics();
 void globalStatistic();
 void cityStatistic();
 void airlineStatistic();
+void airportStatistic();
 void getApMethods();
 
 void exitProgram();
@@ -28,6 +29,7 @@ unordered_map<string, Airline> airlineMap; //igual
 
 void welcomePage() {
     cout << endl << "=========WELCOME PAGE=========" << endl;
+    //cout << Statistics::getNumFlightsFromCityToDifferentCountries(g,cityMap,"Porto","Portugal");
     cout << endl << "Options:\n\t1-Get statistics\n\t2-Airport methods\n\t5-Credits\n\te-Exit" <<endl;
     char input;
     while (true){
@@ -66,7 +68,7 @@ void getStatistics(){
     cout << endl << "=========GET STATISTICS=========" << endl;
     cout << endl;
     cout << "Choose the type of statistics!" << endl;
-    cout << endl << "Options:\n\t1-Global\n\t2-City\n\t3-Arline\n\tb-Back\n\te-Exit"<<endl;
+    cout << endl << "Options:\n\t1-Global\n\t2-City\n\t3-Airline\n\t4-Airport\n\tb-Back\n\te-Exit"<<endl;
     char inputType;
     string inputDestination;
     while (true){
@@ -82,10 +84,10 @@ void getStatistics(){
            case ('3'):
                airlineStatistic();
                return getStatistics();
-                   /*
            case ('4'):
-               airlineStatistic();
+               airportStatistic();
                return getStatistics();
+                     /*
            case ('5'):
                airportStatistic();
                return getStatistics();
@@ -103,7 +105,7 @@ void getStatistics(){
 void globalStatistic(){
     cout << endl << "=========GLOBAL STATISTICS=========" << endl;
     cout << endl;
-    cout << "Choose the statistic:" << endl;
+    cout << "Choose the statistic!" << endl;
     cout << endl << "Options:\n\t1-Total airports\n\t2-Total flights\n\tb-Back\n\te-Exit"<<endl;
 
     char option;
@@ -150,16 +152,16 @@ void cityStatistic(){
     string city;
     string country;
     cout << "Insert the name of the city: "<< endl;
-    cin >> city;
+    getline(cin>>ws, city);
     cout << "Insert the country of the city you have chosen: " << endl;
-    cin >>country;
+    getline(cin>>ws, country);
     auto it= cityMap.find(city + country);
     if (it == cityMap.end()) {
         cout << "The city inserted <" << city << "," << country << "> is not valid. Try again!" << endl;
         cityStatistic();
     }
-    cout << "Choose the statistic:" << endl;
-    cout << endl << "Options:\n\t1-Total flights\n\tb-Back\n\te-Exit" << endl;
+    cout << "Choose the statistic!" << endl;
+    cout << endl << "Options:\n\t1-Total flights\n\t2-Number of flights to different countries\n\tb-Back\n\te-Exit" << endl;
 
     char option;
     while (true){
@@ -170,11 +172,11 @@ void cityStatistic(){
                 Statistics::getNumFlightsPerCity(g,cityMap,city,country);
                 lastPage();
                 return getStatistics();
-                /*
             case ('2'):
-                cout << "Number of flights: " << d_.nFlights2(c) << endl;
+                Statistics::getNumFlightsFromCityToDifferentCountries(g,cityMap,city,country);
                 lastPage();
                 return getStatistics();
+                 /*
             case ('3'):
                 cout << "Number of airlines: " <<  d_.nAirlines2(c) << endl;
                 lastPage();
@@ -205,7 +207,7 @@ void airlineStatistic(){
         cout << "The airline with code <" << code << "> does not exist. Try again!" << endl;
         airlineStatistic();
     }
-    cout << "Choose the statistic:" << endl;
+    cout << "Choose the statistic!" << endl;
     cout << endl << "Options:\n\t1-Total flights\n\tb-Back\n\te-Exit"<<endl;
 
     char option;
@@ -215,6 +217,41 @@ void airlineStatistic(){
         switch (option) {
             case ('1'):
                 Statistics::getNumFlightsPerAirline(airlineMap, code);
+                lastPage();
+                return getStatistics();
+            case ('b'):
+                return getStatistics();
+            case ('e'):
+                return exitProgram();
+
+            default:
+                cout << endl << "Not a valid option" << endl;
+        }
+    }
+}
+void airportStatistic(){
+    cout << endl << "=========AIRPORT STATISTICS=========" << endl;
+    cout << endl;
+    string code;
+    cout << "Insert the airport code:" << endl;
+    cin >> code;
+    auto it= airportMap.find(code);
+    if (it == airportMap.end()) {
+        cout << "The airport with code <" << code << "> does not exist. Try again!" << endl;
+        airportStatistic();
+    }
+    cout << endl << "Choose the statistic!" << endl;
+    cout << endl << "Options:\n\t1-Number of flights to different countries\n\tb-Back\n\te-Exit"<<endl;
+
+    char option;
+
+    while (true){
+        cout << "Choose option:";
+        cin >> option;
+
+        switch (option) {
+            case ('1'):
+                Statistics::getNumFlightsFromAirportToDifferentCountries(g,airportMap,code);
                 lastPage();
                 return getStatistics();
             case ('b'):

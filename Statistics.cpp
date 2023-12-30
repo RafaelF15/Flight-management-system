@@ -55,48 +55,37 @@ int Statistics::getNumFlightsPerAirline(unordered_map<std::string, Airline> a, s
     return num;
 }
 
-int
-Statistics::getNumFlightsFromAirportToDifferentCountries(Graph<Airport> g, unordered_map<string, Airport> airportMap, string code) {
-    try {
-        int count = 0;
-        unordered_map<string,int> m;
-        Airport a = airportMap.at(code);
-        Vertex<Airport>* v = g.findVertex(a);
-        for(Edge<Airport> e : v->getAdj()){
-            if(m.find(e.getDest()->getInfo().getCountry()) == m.end()){
-                count++;
-                m.emplace(e.getDest()->getInfo().getCountry(), 0);
-            }
+int Statistics::getNumFlightsFromAirportToDifferentCountries(Graph<Airport> g, unordered_map<string, Airport> airportMap, string code) {
+    int count = 0;
+    unordered_map<string,int> m;
+    Airport a = airportMap.at(code);
+    Vertex<Airport>* v = g.findVertex(a);
+    for(Edge<Airport> e : v->getAdj()){
+        if(m.find(e.getDest()->getInfo().getCountry()) == m.end()){
+            count++;
+            m.emplace(e.getDest()->getInfo().getCountry(), 0);
         }
-        cout << '\n' << "There are " << count << " possible countries reachable from " << a.getName() << " with only one flight.";
-
-    } catch (const out_of_range &e)
-    {
-        cerr << "There is no Airport with that code.";
     }
+    cout << '\n' << "There are " << count << " possible countries reachable from " << a.getName() << " with only one flight.";
+    return count;
 }
 
 int Statistics::getNumFlightsFromCityToDifferentCountries(Graph<Airport> g, unordered_map<string, City> cityMap, string cityName, string country) {
     int numFlights = 0;
     unordered_map<string,int> m;
     string key = cityName + country;
-    try {
-        City c = cityMap.at(key);
-        for(Airport a: c.getAirports()){
-            Vertex<Airport>* v = g.findVertex(a);
-            for(Edge<Airport> e : v->getAdj()){
-                if(m.find(e.getDest()->getInfo().getCountry()) == m.end()){
-                    numFlights++;
-                    m.emplace(e.getDest()->getInfo().getCountry(), 0);
-                }
+    City c = cityMap.at(key);
+    for(Airport a: c.getAirports()){
+        Vertex<Airport>* v = g.findVertex(a);
+        for(Edge<Airport> e : v->getAdj()){
+            if(m.find(e.getDest()->getInfo().getCountry()) == m.end()){
+                numFlights++;
+                m.emplace(e.getDest()->getInfo().getCountry(), 0);
             }
         }
-        cout << '\n' << "There are " << numFlights << " reachable countries from " << cityName << "," << country << " with only one flight." << endl;
-
-    } catch (const out_of_range &e)
-    {
-        cerr << "The city does not exist.";
     }
+    cout << '\n' << "There are " << numFlights << " reachable countries from " << cityName << "," << country << " with only one flight." << endl;
+    return numFlights;
 }
 
 int Statistics::getNumOfReachableAirportsFromAirport(Graph<Airport> g, unordered_map<string, Airport> airportMap, string code) {
