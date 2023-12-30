@@ -215,11 +215,19 @@ int main() {
     Statistics::getNumFlightsFromCityToDifferentCountries(g, cityMap, "Paris", "France");
 
     Statistics::getNumOfReachableAirportsFromAirport(g, airportMap, "SSR");
+    Statistics::getNumOfReachableCitiesFromAirport(g, airportMap, "SSR");
+    Statistics::getNumOfReachableCountriesFromAirport(g, airportMap, "SSR");
+
+    Statistics::numReachableAirportsXFlights(g, airportMap, "SSR", 2);
+    Statistics::numReachableCitiesXFlights(g, airportMap,"SSR", 2);
+    Statistics::numReachableCountriesXFlights(g, airportMap,"SSR", 2);
+
     */
 
     welcomePage();
 
 
     return 0;
+
 
 }
