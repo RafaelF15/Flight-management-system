@@ -30,6 +30,21 @@ int Statistics::getNumFlightsFromAirport(Graph<Airport> g, unordered_map<string,
         cerr << "There is no Airport with that code.";
     }
 }
+int Statistics::getNumAirlinesFromAirport(Graph<Airport> g, unordered_map<string,Airport> airportMap ,string code) {
+    try {
+        set<string> aux = {};
+        Airport a = airportMap.at(code);
+        Vertex<Airport>* v = g.findVertex(a);
+        for (auto e: v->getAdj()) {
+            aux.insert(e.getFlight().getAirline().getCode());
+        }
+        cout << '\n' << "There are " << aux.size() << " different airlines available from airport: '" << a.getName() << "' of code: " << a.getCode() << "." << endl;
+        return aux.size();
+    } catch (const out_of_range &e)
+    {
+        cerr << "There is no Airport with that code.";
+    }
+}
 
 int Statistics::getNumFlightsPerCity(Graph<Airport> g, unordered_map<std::string, City> cityMap, string cityName, string country) {
     int numFlights = 0;
