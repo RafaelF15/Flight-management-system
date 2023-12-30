@@ -31,3 +31,4 @@ public:
     static int numReachableCitiesXFlights(Graph<Airport> g, unordered_map<string, Airport> airportMap, string code, int k);
     static int numReachableCountriesXFlights(Graph<Airport> g, unordered_map<string, Airport> airportMap, string code, int k);
 };
+#endif //FLIGHT_MANAGEMENT_SYSTEM_STATISTICS_H
