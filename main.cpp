@@ -7,6 +7,7 @@
 #include "Reading.h"
 #include "Statistics.h"
 #include <unordered_map>
+#include <typeinfo>
 using namespace std;
 
 void welcomePage();
@@ -269,9 +270,9 @@ void getApMethods(){
     cout << endl << "=========AIRPORT METHODS=========" << endl;
     cout << endl;
     cout << endl << "Choose the method!" << endl;
-    cout << endl << "Options:\n\t1-Total flights from airport\n\t2-Total airlines from airport\n\tb-Back\n\te-Exit"<<endl;
+    cout << endl << "Options:\n\t1-Total flights from airport\n\t2-Total airlines from airport\n\t3-Total airport destinations from airport\n\t4-Total city destinations from airport\n\t5-Total country destinations from airport\n\t6-Number of reachable airports with maximum of X stops from airport\n\t7-Number of reachable cities with maximum of X stops from airport\n\t8-Number of reachable countries with maximum of X stops from airport\n\tb-Back\n\te-Exit"<<endl;
     char option;
-    int max;
+    string max;
     string code;
     auto it = airportMap.find(code);
     while (true){
@@ -300,64 +301,99 @@ void getApMethods(){
                 Statistics::getNumAirlinesFromAirport(g, airportMap, code);
                 lastPage();
                 return getApMethods();
-                 /*
             case ('3'):
                 cout << "Insert the airport code:" << endl;
-                cin >> ap;
-                if (d_.getAirports().find(ap) == d_.getAirports().end()){
-                    cout << "\nNot a valid airport...\nTry again!\n\n";
+                cin >> code;
+                it = airportMap.find(code);
+                if (it == airportMap.end()) {
+                    cout << "There is no Airport with code <" << code << "> Try again!" << endl;
                     getApMethods();
                 }
-                cout << "Number of city destinations: " << apm_.nCities(ap) << endl;
+                Statistics::getNumOfReachableAirportsFromAirport(g,airportMap,code);
                 lastPage();
                 return getApMethods();
             case ('4'):
                 cout << "Insert the airport code:" << endl;
-                cin >> ap;
-                if (d_.getAirports().find(ap) == d_.getAirports().end()){
-                    cout << "\nNot a valid airport...\nTry again!\n\n";
+                cin >> code;
+                it = airportMap.find(code);
+                if (it == airportMap.end()) {
+                    cout << "There is no Airport with code <" << code << "> Try again!" << endl;
                     getApMethods();
                 }
-                cout << "Number of country destinations: " << apm_.nCountries(ap) << endl;
+                //completar com função
                 lastPage();
                 return getApMethods();
             case ('5'):
-                cout << "Insert the origin airport code:" << endl;
-                cin >> ap;
-                if (d_.getAirports().find(ap) == d_.getAirports().end()){
-                    cout << "\nNot a valid airport...\nTry again!\n\n";
+                cout << "Insert the airport code:" << endl;
+                cin >> code;
+                it = airportMap.find(code);
+                if (it == airportMap.end()) {
+                    cout << "There is no Airport with code <" << code << "> Try again!" << endl;
                     getApMethods();
                 }
-                cout << "Insert the maximum number of flights:" << endl;
-                cin >> max;
-                cout << "Number of reachable airports: " << apm_.nAirportsWithMaxFlights(ap,max) << endl;
+                //completar com função
                 lastPage();
                 return getApMethods();
             case ('6'):
+                int max1;
                 cout << "Insert the origin airport code:" << endl;
-                cin >> ap;
-                if (d_.getAirports().find(ap) == d_.getAirports().end()){
-                    cout << "\nNot a valid airport...\nTry again!\n\n";
+                cin >> code;
+                it = airportMap.find(code);
+                if (it == airportMap.end()) {
+                    cout << "There is no Airport with code <" << code << "> Try again!" << endl;
                     getApMethods();
                 }
-                cout << "Insert the maximum number of flights:" << endl;
-                cin >> max;
-                cout << "Number of reachable cities: " << apm_.nCitiesWithMaxFlights(ap,max) << endl;
+                try {
+                    cout << "Insert the maximum number of stops:" << endl; // or flights?
+                    cin >> max;
+                    max1 = stoi(max);
+                } catch (const invalid_argument& ia) {
+                    cerr << " Insert an integer, please. Try again! "<< endl;
+                    getApMethods();
+                }
+                Statistics::numReachableAirportsXFlights(g,airportMap,code,max1);
                 lastPage();
                 return getApMethods();
             case ('7'):
+                int max2;
                 cout << "Insert the origin airport code:" << endl;
-                cin >> ap;
-                if (d_.getAirports().find(ap) == d_.getAirports().end()){
-                    cout << "\nNot a valid airport...\nTry again!\n\n";
+                cin >> code;
+                it = airportMap.find(code);
+                if (it == airportMap.end()) {
+                    cout << "There is no Airport with code <" << code << "> Try again!" << endl;
                     getApMethods();
                 }
-                cout << "Insert the maximum number of flights:" << endl;
-                cin >> max;
-                cout << "Number of reachable countries: " << apm_.nCountriesWithMaxFlights(ap,max) << endl;
+                try {
+                    cout << "Insert the maximum number of stops:" << endl; // or flights?
+                    cin >> max;
+                    max2 = stoi(max);
+                } catch (const invalid_argument& ia) {
+                    cerr << " Insert an integer, please. Try again! "<< endl;
+                    getApMethods();
+                }
+                Statistics::numReachableCitiesXFlights(g,airportMap,code,max2);
                 lastPage();
                 return getApMethods();
-                 */
+            case ('8'):
+                int max3;
+                cout << "Insert the origin airport code:" << endl;
+                cin >> code;
+                it = airportMap.find(code);
+                if (it == airportMap.end()) {
+                    cout << "There is no Airport with code <" << code << "> Try again!" << endl;
+                    getApMethods();
+                }
+                try {
+                    cout << "Insert the maximum number of stops:" << endl; // or flights?
+                    cin >> max;
+                    max3 = stoi(max);
+                } catch (const invalid_argument& ia) {
+                    cerr << " Insert an integer, please. Try again! "<< endl;
+                    getApMethods();
+                }
+                Statistics::numReachableCountriesXFlights(g,airportMap,code,max3);
+                lastPage();
+                return getApMethods();
             case ('b'):
                 return welcomePage();
             case ('e'):

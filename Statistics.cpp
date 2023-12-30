@@ -141,106 +141,106 @@ int Statistics::numReachableAirportsXFlights(Graph<Airport> g, unordered_map<str
             }
         }
     }
-    cout << '\n' << "There are " << res.size() << " airports reachable from " << s->getInfo().getName() << " with " << k << " or less lay-overs." << endl;
-    return res.size();
+    cout << '\n' << "There are " << res.size()-1 << " airports reachable from " << s->getInfo().getName() << " with " << k << " or less lay-overs." << endl;
+    return res.size()-1;
 }
 
 int Statistics::numReachableCitiesXFlights(Graph<Airport> g, unordered_map<string, Airport> airportMap, string code, int k) {
     vector<Airport> res;
-    queue<pair<Vertex<Airport>*, int>> q;
+    queue<pair<Vertex<Airport> *, int>> q;
 
-    for(Vertex<Airport>* v : g.getVertexSet()) v->setVisited(false);
+    for (Vertex<Airport> *v: g.getVertexSet()) v->setVisited(false);
 
-    Vertex<Airport>* s = g.findVertex(airportMap.at(code));
-
-    q.push({s, 0});
-    s->setVisited(true);
-
-    while (!q.empty()){
-        Vertex<Airport>* v = q.front().first;
-        int currentDistance = q.front().second;
-        q.pop();
-
-        if(currentDistance <= k){
-            res.push_back(v->getInfo());
-        }
-
-        for(Edge<Airport> e : v->getAdj()){
-            Vertex<Airport>* v1 = e.getDest();
-            if(!v1->isVisited()){
-                q.push({v1, currentDistance+1});
-                v1->setVisited(true);
-            }
-        }
-    }
-
-    int cityCount = 0;
-    for (const Airport& airport : res) {
-        if (airport.getCity() != "") {
-            cityCount++;
-        }
-    }
-
-    cout << '\n' << "There are " << cityCount << " cities reachable from " << s->getInfo().getName() << " with " << k << " or less lay-overs." << endl;
-    return cityCount;
-}
-
-int Statistics::numReachableCountriesXFlights(Graph<Airport> g, unordered_map<string, Airport> airportMap, string code, int k) {
-    unordered_set<string> uniqueCountries;
-    queue<pair<Vertex<Airport>*, int>> q;
-
-    for (Vertex<Airport>* v : g.getVertexSet()) {
-        v->setVisited(false);
-    }
-
-    Vertex<Airport>* s = g.findVertex(airportMap.at(code));
+    Vertex<Airport> *s = g.findVertex(airportMap.at(code));
 
     q.push({s, 0});
     s->setVisited(true);
 
     while (!q.empty()) {
-        Vertex<Airport>* v = q.front().first;
+        Vertex<Airport> *v = q.front().first;
         int currentDistance = q.front().second;
         q.pop();
 
         if (currentDistance <= k) {
-            uniqueCountries.insert(v->getInfo().getCountry());
+            res.push_back(v->getInfo());
         }
 
-        for (Edge<Airport> e : v->getAdj()) {
-            Vertex<Airport>* v1 = e.getDest();
+        for (Edge<Airport> e: v->getAdj()) {
+            Vertex<Airport> *v1 = e.getDest();
             if (!v1->isVisited()) {
                 q.push({v1, currentDistance + 1});
                 v1->setVisited(true);
             }
         }
     }
+        set<string> auxCity = {};
+        for (auto ap: res) {
+            auxCity.insert(ap.getCity());
+        }
+        int cityCount = auxCity.size();
+        cout << '\n' << "There are " << cityCount-1 << " cities reachable from " << s->getInfo().getName() << " with "
+             << k << " or less lay-overs." << endl;
+        return cityCount-1;
+    }
+    int Statistics::numReachableCountriesXFlights(Graph<Airport> g, unordered_map<string, Airport> airportMap, string code,
+                                              int k) {
+        unordered_set<string> uniqueCountries;
+        queue<pair<Vertex<Airport> *, int>> q;
 
-    int countryCount = static_cast<int>(uniqueCountries.size());
-    cout << '\n' << "There are " << countryCount << " countries reachable from " << s->getInfo().getName() << " with " << k << " or less lay-overs." << endl;
-    return countryCount;
-}
+        for (Vertex<Airport> *v: g.getVertexSet()) {
+            v->setVisited(false);
+        }
 
-vector<string> Statistics::getTopAirportsByFlights(Graph<Airport> g, int k) {
-    vector<string> topAirports;
+        Vertex<Airport> *s = g.findVertex(airportMap.at(code));
 
-    priority_queue<pair<int, Vertex<Airport>*>> pq;
+        q.push({s, 0});
+        s->setVisited(true);
 
-    for (Vertex<Airport>* v : g.getVertexSet()) {
-        int numFlights = static_cast<int>(v->getAdj().size());
-        pq.push({numFlights, v});
+        while (!q.empty()) {
+            Vertex<Airport> *v = q.front().first;
+            int currentDistance = q.front().second;
+            q.pop();
+
+            if (currentDistance <= k) {
+                uniqueCountries.insert(v->getInfo().getCountry());
+            }
+
+            for (Edge<Airport> e: v->getAdj()) {
+                Vertex<Airport> *v1 = e.getDest();
+                if (!v1->isVisited()) {
+                    q.push({v1, currentDistance + 1});
+                    v1->setVisited(true);
+                }
+            }
+        }
+
+        int countryCount = static_cast<int>(uniqueCountries.size());
+        cout << '\n' << "There are " << countryCount-1 << " countries reachable from " << s->getInfo().getName()
+             << " with " << k << " or less lay-overs." << endl;
+        return countryCount -1;
     }
 
-    for (int i = 0; i < k && !pq.empty(); ++i) {
-        pair<int, Vertex<Airport>*> topAirport = pq.top();
-        pq.pop();
+    vector<string> Statistics::getTopAirportsByFlights(Graph<Airport> g, int k) {
+        vector<string> topAirports;
 
-        string airportInfo = to_string(i + 1) + ") " + topAirport.second->getInfo().getCode() + " - " + topAirport.second->getInfo().getName();
+        priority_queue<pair<int, Vertex<Airport> *>> pq;
 
-        topAirports.push_back(airportInfo);
+        for (Vertex<Airport> *v: g.getVertexSet()) {
+            int numFlights = static_cast<int>(v->getAdj().size());
+            pq.push({numFlights, v});
+        }
+
+        for (int i = 0; i < k && !pq.empty(); ++i) {
+            pair<int, Vertex<Airport> *> topAirport = pq.top();
+            pq.pop();
+
+            string airportInfo = to_string(i + 1) + ") " + topAirport.second->getInfo().getCode() + " - " +
+                                 topAirport.second->getInfo().getName();
+
+            topAirports.push_back(airportInfo);
+        }
+        for (const string &airportInfo: topAirports) {
+            cout << airportInfo << endl;
+        }
+        return topAirports;
     }
-    for (const string& airportInfo : topAirports) {
-        cout << airportInfo << endl;
-    }
-    return topAirports;
-}
