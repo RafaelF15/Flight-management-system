@@ -6,16 +6,16 @@
 #include <unordered_set>
 
 int Statistics::getNumAirports(Graph<Airport> g) {
-    cout << '\n' << "There are " << g.getNumVertex() << " airports available." << endl;
+    // tirei linha com um cout que estava a mais
     return g.getNumVertex();
 }
 
 int Statistics::getNumFlights(Graph<Airport> g) {
+    // tirei linha com um cout que estava a mais
     int edgeCount = 0;
     for(Vertex<Airport>* v: g.getVertexSet()){
         edgeCount += v->getAdj().size();
     }
-    cout << '\n' << "There are " << edgeCount << " flights available." << endl;
     return edgeCount;
 }
 

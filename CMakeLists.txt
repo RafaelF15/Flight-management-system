@@ -17,4 +17,6 @@ add_executable(Flight_management_system main.cpp
         Reading.h
         Statistics.cpp
         Statistics.h
+        Interface.cpp
+        Interface.h
 )
