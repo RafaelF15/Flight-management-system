@@ -14,6 +14,8 @@ void welcomePage();
 void getStatistics();
 
 void globalStatistic();
+void cityStatistic();
+void airlineStatistic();
 void getApMethods();
 
 void exitProgram();
@@ -21,6 +23,8 @@ void lastPage();
 void credits();
 Graph<Airport> g; //inicializei aqui porque não estava a reconhecer se fosse dentro do main
 unordered_map<string, Airport> airportMap; //igual a cima
+unordered_map<string, City> cityMap; //same
+unordered_map<string, Airline> airlineMap; //igual
 
 void welcomePage() {
     cout << endl << "=========WELCOME PAGE=========" << endl;
@@ -61,8 +65,8 @@ void welcomePage() {
 void getStatistics(){
     cout << endl << "=========GET STATISTICS=========" << endl;
     cout << endl;
-    cout << "Choose the type of statistics:" << endl;
-    cout << endl << "Options:\n\t1-Global\n\tb-Back\n\te-Exit"<<endl;
+    cout << "Choose the type of statistics!" << endl;
+    cout << endl << "Options:\n\t1-Global\n\t2-City\n\t3-Arline\n\tb-Back\n\te-Exit"<<endl;
     char inputType;
     string inputDestination;
     while (true){
@@ -72,12 +76,13 @@ void getStatistics(){
             case ('1'):
                 globalStatistic();
                 return getStatistics();
-                /*
            case ('2'):
-               return getStatistics();
-           case ('3'):
                cityStatistic();
                return getStatistics();
+           case ('3'):
+               airlineStatistic();
+               return getStatistics();
+                   /*
            case ('4'):
                airlineStatistic();
                return getStatistics();
@@ -130,7 +135,7 @@ void globalStatistic(){
 
                  */
             case ('b'):
-                return;
+                return getStatistics();
             case ('e'):
                 return exitProgram();
 
@@ -139,14 +144,99 @@ void globalStatistic(){
         }
     }
 }
+void cityStatistic(){
+    cout << endl << "=========CITY STATISTICS=========" << endl;
+    cout << endl;
+    string city;
+    string country;
+    cout << "Insert the name of the city: "<< endl;
+    cin >> city;
+    cout << "Insert the country of the city you have chosen: " << endl;
+    cin >>country;
+    auto it= cityMap.find(city + country);
+    if (it == cityMap.end()) {
+        cout << "The city inserted <" << city << "," << country << "> is not valid. Try again!" << endl;
+        cityStatistic();
+    }
+    cout << "Choose the statistic:" << endl;
+    cout << endl << "Options:\n\t1-Total flights\n\tb-Back\n\te-Exit" << endl;
+
+    char option;
+    while (true){
+        cout << "Choose option:";
+        cin >> option;
+        switch (option) {
+            case ('1'):
+                Statistics::getNumFlightsPerCity(g,cityMap,city,country);
+                lastPage();
+                return getStatistics();
+                /*
+            case ('2'):
+                cout << "Number of flights: " << d_.nFlights2(c) << endl;
+                lastPage();
+                return getStatistics();
+            case ('3'):
+                cout << "Number of airlines: " <<  d_.nAirlines2(c) << endl;
+                lastPage();
+                return getStatistics();
+            case ('4'):
+                cout << "Number of destinations: " << d_.nDestinations2(c) << endl;
+                lastPage();
+                return getStatistics();
+                 */
+            case ('b'):
+                return getStatistics();
+            case ('e'):
+                return exitProgram();
+
+            default:
+                cout << endl << "Not a valid option" << endl;
+        }
+    }
+}
+void airlineStatistic(){
+    cout << endl << "=========AIRLINE STATISTICS=========" << endl;
+    cout << endl;
+    cout << "Insert the code of the airline:" << endl;
+    string code;
+    cin >> code;
+    auto it= airlineMap.find(code);
+    if (it == airlineMap.end()) {
+        cout << "The airline with code <" << code << "> does not exist. Try again!" << endl;
+        airlineStatistic();
+    }
+    cout << "Choose the statistic:" << endl;
+    cout << endl << "Options:\n\t1-Total flights\n\tb-Back\n\te-Exit"<<endl;
+
+    char option;
+    while (true){
+        cout << "Choose option:";
+        cin >> option;
+        switch (option) {
+            case ('1'):
+                Statistics::getNumFlightsPerAirline(airlineMap, code);
+                lastPage();
+                return getStatistics();
+            case ('b'):
+                return getStatistics();
+            case ('e'):
+                return exitProgram();
+
+            default:
+                cout << endl << "Not a valid option" << endl;
+        }
+    }
+}
+
 void getApMethods(){
     cout << endl << "=========AIRPORT METHODS=========" << endl;
     cout << endl;
-    cout << endl << "Choose the method:" << endl;
+    cout << endl << "Choose the method!" << endl;
     cout << endl << "Options:\n\t1-Total flights from airport\n\t2-Total airlines from airport\n\tb-Back\n\te-Exit"<<endl;
     char option;
     int max;
     string code;
+    auto it = airportMap.find(code);
     while (true){
         cout << "Choose option:";
         cin >> option;
@@ -154,12 +244,22 @@ void getApMethods(){
             case ('1'):
                 cout << "Insert the airport code:" << endl;
                 cin >> code;
+                it = airportMap.find(code);
+                if (it == airportMap.end()) {
+                    cout << "There is no Airport with code <" << code << "> Try again!" << endl;
+                    getApMethods();
+                }
                 Statistics::getNumFlightsFromAirport(g, airportMap, code);
                 lastPage();
                 return getApMethods();
             case ('2'):
                 cout << "Insert the airport code:" << endl;
                 cin >> code;
+                it = airportMap.find(code);
+                if (it == airportMap.end()) {
+                    cout << "There is no Airport with code <" << code << "> Try again!" << endl;
+                    getApMethods();
+                }
                 Statistics::getNumAirlinesFromAirport(g, airportMap, code);
                 lastPage();
                 return getApMethods();
@@ -222,7 +322,7 @@ void getApMethods(){
                 return getApMethods();
                  */
             case ('b'):
-                return;
+                return welcomePage();
             case ('e'):
                 return exitProgram();
 
@@ -284,10 +384,10 @@ void exitProgram() {
 int main() {
      // Graph<Airport> g;  Main graph, has airports as vertexes and flights as edges, edge weight has been adapted to save the airline that is responsible for the flight;
      // inicializado em cima do ficheiro, ver
-    unordered_map<string, City> cityMap;
+    //unordered_map<string, City> cityMap;
     //IMPORTANT : whenever using the citymap, the keys are of the following format: "ParisFrance"  There are multiple cities with the same name in different countries;
     //You can just use string concatenation: Key = city + country;
-    unordered_map<string, Airline> airlineMap; // Find airline by code
+    // unordered_map<string, Airline> airlineMap; // Find airline by code
     // unordered_map<string, Airport> airportMap; Find airport by code
     Reading::readAirports(g, airportMap,
                           cityMap); // Reads airports from files and adds them to the graph as vertexes (also puts them in the airline map for fast searching if needed)

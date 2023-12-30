@@ -20,18 +20,12 @@ int Statistics::getNumFlights(Graph<Airport> g) {
 }
 
 int Statistics::getNumFlightsFromAirport(Graph<Airport> g, unordered_map<string,Airport> airportMap ,string code) {
-    try {
-        Airport a = airportMap.at(code);
-        Vertex<Airport>* v = g.findVertex(a);
-        cout << '\n' << "There are " << v->getAdj().size() << " flights available from airport: '" << a.getName() << "' of code: " << a.getCode() << "." << endl;
-        return v->getAdj().size();
-    } catch (const out_of_range &e)
-    {
-        cerr << "There is no Airport with that code.";
-    }
+    Airport a = airportMap.at(code);
+    Vertex<Airport>* v = g.findVertex(a);
+    cout << '\n' << "There are " << v->getAdj().size() << " flights available from airport: '" << a.getName() << "' of code: " << a.getCode() << "." << endl;
+    return v->getAdj().size();
 }
 int Statistics::getNumAirlinesFromAirport(Graph<Airport> g, unordered_map<string,Airport> airportMap ,string code) {
-    try {
         set<string> aux = {};
         Airport a = airportMap.at(code);
         Vertex<Airport>* v = g.findVertex(a);
@@ -40,37 +34,25 @@ int Statistics::getNumAirlinesFromAirport(Graph<Airport> g, unordered_map<string
         }
         cout << '\n' << "There are " << aux.size() << " different airlines available from airport: '" << a.getName() << "' of code: " << a.getCode() << "." << endl;
         return aux.size();
-    } catch (const out_of_range &e)
-    {
-        cerr << "There is no Airport with that code.";
-    }
 }
 
 int Statistics::getNumFlightsPerCity(Graph<Airport> g, unordered_map<std::string, City> cityMap, string cityName, string country) {
     int numFlights = 0;
     string key = cityName + country;
-    try {
-        City c = cityMap.at(key);
-        for(Airport a: c.getAirports()){
-            Vertex<Airport>* v = g.findVertex(a);
-            numFlights += v->getAdj().size();
-        }
-        cout << '\n' << "There are " << numFlights << " flights available from " << cityName << "," << country << "." << endl;
-
-    } catch (const out_of_range &e)
-    {
-        cerr << "The city does not exist.";
+    City c = cityMap.at(key);
+    for(Airport a: c.getAirports()){
+        Vertex<Airport>* v = g.findVertex(a);
+        numFlights += v->getAdj().size();
     }
+    cout << '\n' << "There are " << numFlights << " flights available from " << cityName << "," << country << "." << endl;
+    return numFlights;
+
 }
 
 int Statistics::getNumFlightsPerAirline(unordered_map<std::string, Airline> a, string code) {
-    try {
-        int num = a.at(code).getNumFlights();
-        cout << '\n' << "The airline " << a.at(code).getName() << " has " << num << " flights available.";
-    } catch (const out_of_range &e)
-    {
-        cerr << "The airline does not exist.";
-    }
+    int num = a.at(code).getNumFlights();
+    cout << '\n' << "The airline " << a.at(code).getName() << " has " << num << " flights available.";
+    return num;
 }
 
 int
