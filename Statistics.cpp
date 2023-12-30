@@ -231,3 +231,27 @@ int Statistics::numReachableCountriesXFlights(Graph<Airport> g, unordered_map<st
     cout << '\n' << "There are " << countryCount << " countries reachable from " << s->getInfo().getName() << " with " << k << " or less lay-overs." << endl;
     return countryCount;
 }
+
+vector<string> Statistics::getTopAirportsByFlights(Graph<Airport> g, int k) {
+    vector<string> topAirports;
+
+    priority_queue<pair<int, Vertex<Airport>*>> pq;
+
+    for (Vertex<Airport>* v : g.getVertexSet()) {
+        int numFlights = static_cast<int>(v->getAdj().size());
+        pq.push({numFlights, v});
+    }
+
+    for (int i = 0; i < k && !pq.empty(); ++i) {
+        pair<int, Vertex<Airport>*> topAirport = pq.top();
+        pq.pop();
+
+        string airportInfo = to_string(i + 1) + ") " + topAirport.second->getInfo().getCode() + " - " + topAirport.second->getInfo().getName();
+
+        topAirports.push_back(airportInfo);
+    }
+    for (const string& airportInfo : topAirports) {
+        cout << airportInfo << endl;
+    }
+    return topAirports;
+}
