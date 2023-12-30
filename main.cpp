@@ -413,6 +413,8 @@ int main() {
     Statistics::numReachableCitiesXFlights(g, airportMap,"SSR", 2);
     Statistics::numReachableCountriesXFlights(g, airportMap,"SSR", 2);
 
+    vector<string> topAirports = Statistics::getTopAirportsByFlights(g, 5);
+
     */
 
     welcomePage();
