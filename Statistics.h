@@ -13,6 +13,7 @@
 #include "Flight.h"
 #include "Reading.h"
 #include <unordered_map>
+#include <stack>
 #include <unordered_set>
 
 class Statistics {
@@ -27,7 +28,11 @@ public:
     static int getNumFlightsFromCityToDifferentCountries(Graph<Airport> g, unordered_map<string, City> cityMap, string cityName, string country);
     static int getNumOfReachableAirportsFromAirport(Graph<Airport> g, unordered_map<string,Airport> airportMap, string code);
     static void dfsReachAirportFromAirport(Vertex<Airport>* v, vector<Airport>& airports);
-
+    static int numReachableAirportsXFlights(Graph<Airport> g, unordered_map<string, Airport> airportMap, string code, int k);
+    static pair<int, vector<Airport>> maximumTripbfs(Graph<Airport> g, Vertex<Airport>* v);
+    static int findDiameter(Graph<Airport> g);
+    static int articulationPoints(Graph<Airport>* g);
+    static void articulationPointsDfs(Graph<Airport>* g, Vertex<Airport> *v, unordered_set<string>& l, int& i);
     static int numReachableAirportsXFlights(Graph<Airport> g, unordered_map<string, Airport> airportMap, string code, int k);
     static int numReachableCitiesXFlights(Graph<Airport> g, unordered_map<string, Airport> airportMap, string code, int k);
     static int numReachableCountriesXFlights(Graph<Airport> g, unordered_map<string, Airport> airportMap, string code, int k);

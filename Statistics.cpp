@@ -145,6 +145,103 @@ int Statistics::numReachableAirportsXFlights(Graph<Airport> g, unordered_map<str
     return res.size()-1;
 }
 
+
+pair<int, vector<Airport>> Statistics::maximumTripbfs(Graph<Airport> g, Vertex<Airport>* v) {
+    queue<pair<Vertex<Airport>*, int>> q;
+    for(Vertex<Airport>* v : g.getVertexSet()) v->setVisited(false);
+    Vertex<Airport>* s = g.findVertex(v->getInfo());
+    q.push({s, 0});
+    s->setVisited(true);
+    int distance = 0;
+    vector<Airport> airports;
+
+    while(!q.empty()){
+        Vertex<Airport>* v1 = q.front().first;
+        int currentDistance = q.front().second;
+        q.pop();
+        if(currentDistance > distance) {
+            distance = currentDistance;
+            airports.clear();
+            airports.push_back(v1->getInfo());
+        }
+        else if(currentDistance == distance){
+            airports.push_back(v1->getInfo());
+        }
+        for(Edge<Airport> e : v1->getAdj()){
+            Vertex<Airport>* v2 = e.getDest();
+            if(!v2->isVisited()){
+                q.push({v2, currentDistance+1});
+                v2->setVisited(true);
+            }
+        }
+    }
+    return {distance, airports};
+}
+
+int Statistics::findDiameter(Graph<Airport> g) {
+    int diameter = 0;
+    vector<Airport> airports;
+    Airport start = g.getVertexSet()[0]->getInfo();
+    for(Vertex<Airport>* v : g.getVertexSet()){
+        pair<int, vector<Airport>> p = maximumTripbfs(g, v);
+        if (diameter != max(diameter, p.first)){
+            diameter = max(diameter, p.first);
+            airports = p.second;
+            start = v->getInfo();
+        }
+    }
+    cout << '\n' <<"The maximum trip passes trough: " << diameter << " airports starting at: " << start.getName() << " and ending at one of the following: " << endl;
+    for(Airport a: airports){
+        cout << '\n' << a.getName() << endl;
+    }
+    return diameter;
+}
+
+int Statistics::articulationPoints(Graph<Airport> *g) {
+    unordered_set<string> res;
+    int index = 1;
+    for(Vertex<Airport>* v : g->getVertexSet()){
+        v->setVisited(false);
+        v->setProcessing(false);
+    }
+
+    for(Vertex<Airport>* v : g->getVertexSet()){
+        if(!v->isVisited())
+            articulationPointsDfs(g,v,res,index);
+    }
+    cout<< '\n' << "There are " << res.size() << " airports essential to the network's circulation capability" << endl;
+    return res.size();
+}
+
+void Statistics::articulationPointsDfs(Graph<Airport> *g, Vertex<Airport> *v, unordered_set<string> &l, int &i) {
+    v->setNum(i);
+    v->setLow(i);
+    i++;
+    v->setVisited(true);
+    v->setProcessing(true);
+    int count = 0;
+
+    for(Edge<Airport> e : v->getAdj()){
+        Vertex<Airport>* w = e.getDest();
+        if(!w->isVisited()){
+            count++;
+            articulationPointsDfs(g,w,l,i);
+            v->setLow(min(v->getLow(), w->getLow()));
+            if(w->getLow() >= v->getNum() && v != g->getVertexSet()[0]){
+                l.insert(v->getInfo().getCode());
+            }
+            if(w->getLow() >= v->getNum() && v == g->getVertexSet()[0]){
+                if(count > 1)
+                    l.insert(v->getInfo().getCode());
+            }
+        }
+        else {
+            v->setLow(min(v->getLow(), w->getNum()));
+        }
+    }
+    v->setProcessing(false);
+}
+
 int Statistics::numReachableCitiesXFlights(Graph<Airport> g, unordered_map<string, Airport> airportMap, string code, int k) {
     vector<Airport> res;
     queue<pair<Vertex<Airport> *, int>> q;
@@ -244,3 +341,4 @@ int Statistics::numReachableCitiesXFlights(Graph<Airport> g, unordered_map<strin
         }
         return topAirports;
     }
+

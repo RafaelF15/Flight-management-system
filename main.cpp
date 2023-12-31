@@ -544,12 +544,14 @@ int main() {
     Statistics::getNumFlightsPerAirline(airlineMap, "IBE");
     Statistics::getNumFlightsFromAirportToDifferentCountries(g, airportMap, "JFK");
     Statistics::getNumFlightsFromCityToDifferentCountries(g, cityMap, "Paris", "France");
-
     Statistics::getNumOfReachableAirportsFromAirport(g, airportMap, "SSR");
     Statistics::getNumOfReachableCitiesFromAirport(g, airportMap, "SSR");
     Statistics::getNumOfReachableCountriesFromAirport(g, airportMap, "SSR");
 
     Statistics::numReachableAirportsXFlights(g, airportMap, "SSR", 2);
+
+    //Statistics::findDiameter(g);
+    Statistics::articulationPoints(&g);
     Statistics::numReachableCitiesXFlights(g, airportMap,"SSR", 2);
     Statistics::numReachableCountriesXFlights(g, airportMap,"SSR", 2);
 
@@ -561,6 +563,5 @@ int main() {
 
 
     return 0;
-
 
 }
