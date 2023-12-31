@@ -208,3 +208,48 @@ int Statistics::findDiameter(Graph<Airport> g) {
     }
     return diameter;
 }
+
+int Statistics::articulationPoints(Graph<Airport> *g) {
+    unordered_set<string> res;
+    int index = 1;
+    for(Vertex<Airport>* v : g->getVertexSet()){
+        v->setVisited(false);
+        v->setProcessing(false);
+    }
+
+    for(Vertex<Airport>* v : g->getVertexSet()){
+        if(!v->isVisited())
+            articulationPointsDfs(g,v,res,index);
+    }
+    cout<< '\n' << "There are " << res.size() << " airports essential to the network's circulation capability" << endl;
+    return res.size();
+}
+
+void Statistics::articulationPointsDfs(Graph<Airport> *g, Vertex<Airport> *v, unordered_set<string> &l, int &i) {
+    v->setNum(i);
+    v->setLow(i);
+    i++;
+    v->setVisited(true);
+    v->setProcessing(true);
+    int count = 0;
+
+    for(Edge<Airport> e : v->getAdj()){
+        Vertex<Airport>* w = e.getDest();
+        if(!w->isVisited()){
+            count++;
+            articulationPointsDfs(g,w,l,i);
+            v->setLow(min(v->getLow(), w->getLow()));
+            if(w->getLow() >= v->getNum() && v != g->getVertexSet()[0]){
+                l.insert(v->getInfo().getCode());
+            }
+            if(w->getLow() >= v->getNum() && v == g->getVertexSet()[0]){
+                if(count > 1)
+                    l.insert(v->getInfo().getCode());
+            }
+        }
+        else {
+            v->setLow(min(v->getLow(), w->getNum()));
+        }
+    }
+    v->setProcessing(false);
+}

@@ -21,7 +21,8 @@ class Vertex {
     vector<Edge<T>> adj;
     bool visited;
     bool processing;
-
+    int num;
+    int low;
     void addEdge(Vertex<T> *dest, Flight w);
     bool removeEdgeTo(Vertex<T> *d);
 
@@ -35,6 +36,14 @@ public:
     void setProcessing(bool p);
     const vector<Edge<T>> &getAdj() const;
     void setAdj(const vector<Edge<T>> &adj);
+
+    int getNum() const;
+
+    void setNum(int num);
+
+    int getLow() const;
+
+    void setLow(int low);
 
     friend class Graph<T>;
 };
@@ -207,6 +216,25 @@ bool Graph<T>::removeVertex(const T &in) {
     return false;
 }
 
+template<class T>
+int Vertex<T>::getNum() const {
+    return num;
+}
+
+template<class T>
+void Vertex<T>::setNum(int num) {
+    Vertex::num = num;
+}
+
+template<class T>
+int Vertex<T>::getLow() const {
+    return low;
+}
+
+template<class T>
+void Vertex<T>::setLow(int low) {
+    Vertex::low = low;
+}
 
 
 #endif //FLIGHT_MANAGEMENT_SYSTEM_GRAPH_H
