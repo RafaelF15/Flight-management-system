@@ -558,6 +558,7 @@ int main() {
     vector<string> topAirports = Statistics::getTopAirportsByFlights(g, 5);
 
     */
+    //Statistics::articulationPoints(&g, airportMap);
 
     welcomePage();
 
