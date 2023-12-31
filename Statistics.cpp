@@ -197,7 +197,7 @@ int Statistics::findDiameter(Graph<Airport> g) {
     return diameter;
 }
 
-int Statistics::articulationPoints(Graph<Airport> *g) {
+int Statistics::articulationPoints(Graph<Airport> *g, unordered_map<string, Airport> airportMap) {
     unordered_set<string> res;
     int index = 1;
     for(Vertex<Airport>* v : g->getVertexSet()){
@@ -210,6 +210,10 @@ int Statistics::articulationPoints(Graph<Airport> *g) {
             articulationPointsDfs(g,v,res,index);
     }
     cout<< '\n' << "There are " << res.size() << " airports essential to the network's circulation capability" << endl;
+    cout << '\n' << "The airports are: " << endl;
+    for(string s : res){
+        cout << '\n' << airportMap.at(s).getName() << endl;
+    }
     return res.size();
 }
 

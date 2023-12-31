@@ -31,7 +31,7 @@ public:
     static int numReachableAirportsXFlights(Graph<Airport> g, unordered_map<string, Airport> airportMap, string code, int k);
     static pair<int, vector<Airport>> maximumTripbfs(Graph<Airport> g, Vertex<Airport>* v);
     static int findDiameter(Graph<Airport> g);
-    static int articulationPoints(Graph<Airport>* g);
+    static int articulationPoints(Graph<Airport>* g, unordered_map<string, Airport> airportMap);
     static void articulationPointsDfs(Graph<Airport>* g, Vertex<Airport> *v, unordered_set<string>& l, int& i);
     static int numReachableCitiesXFlights(Graph<Airport> g, unordered_map<string, Airport> airportMap, string code, int k);
     static int numReachableCountriesXFlights(Graph<Airport> g, unordered_map<string, Airport> airportMap, string code, int k);
