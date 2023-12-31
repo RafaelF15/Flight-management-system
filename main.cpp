@@ -431,7 +431,7 @@ void otherInfo(){
                 lastPage();
                 return otherInfo();
             case ('2'):
-                Statistics::articulationPoints(&g);
+                Statistics::articulationPoints(&g,airportMap);
                 lastPage();
                 return otherInfo();
             case ('3'):
