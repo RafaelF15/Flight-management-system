@@ -190,7 +190,7 @@ int Statistics::findDiameter(Graph<Airport> g) {
             start = v->getInfo();
         }
     }
-    cout << '\n' <<"The maximum trip passes trough: " << diameter << " airports starting at: " << start.getName() << " and ending at one of the following: " << endl;
+    cout << '\n' <<"The maximum trip passes trough " << diameter << " airports starting at " << start.getName() << " and ending at one of the following: " << endl;
     for(Airport a: airports){
         cout << '\n' << a.getName() << endl;
     }
