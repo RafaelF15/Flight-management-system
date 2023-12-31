@@ -19,7 +19,7 @@ void cityStatistic();
 void airlineStatistic();
 void airportStatistic();
 void getApMethods();
-
+void otherInfo();
 void exitProgram();
 void lastPage();
 void credits();
@@ -31,7 +31,7 @@ unordered_map<string, Airline> airlineMap; //igual
 void welcomePage() {
     cout << endl << "=========WELCOME PAGE=========" << endl;
     //cout << Statistics::getNumFlightsFromCityToDifferentCountries(g,cityMap,"Porto","Portugal");
-    cout << endl << "Options:\n\t1-Get statistics\n\t2-Airport methods\n\t5-Credits\n\te-Exit" <<endl;
+    cout << endl << "Options:\n\t1-Get statistics\n\t2-Airport methods\n\t3-Other methods\n\t5-Credits\n\te-Exit" <<endl;
     char input;
     while (true){
         cout << "Choose option:";
@@ -44,14 +44,9 @@ void welcomePage() {
             case ('2'):
                 getApMethods();
                 return welcomePage();
-                 /*
             case ('3'):
-                getApMethods();
-                return welcomePage();
-            case ('4'):
                 otherInfo();
                 return welcomePage();
-                 */
             case ('5'):
                 credits();
                 return welcomePage();
@@ -404,6 +399,78 @@ void getApMethods(){
         }
     }
 }
+void otherInfo(){
+    cout << endl << "=========OTHER INFORMATIONS=========" << endl;
+    cout << endl;
+
+    cout << endl << "Chose the method!" << endl;
+    cout << endl << "Options:\n\t1-Airports with top-K number of flights\n\tb-Back\n\te-Exit"<<endl;
+
+    char option;
+    string k;
+    while (true){
+        cout << "Choose option:";
+        cin >> option;
+
+        switch (option) {
+            case ('1'):
+                int k1;
+                try {
+                    cout << "How many airports with most flights?" << endl;
+                    cin >> k;
+                    k1 = stoi(k);
+                } catch (const invalid_argument& ia) {
+                    cerr << " Insert an integer, please. Try again! "<< endl;
+                    otherInfo();
+                }
+                Statistics::getTopAirportsByFlights(g,k1);
+                lastPage();
+                return otherInfo();
+                /*
+            case ('2'):
+                cout << "How many airports with most flights?";
+                cin >> k;
+                cout << "Top-" << k << " airports with most flights: " ;
+                for (auto a: d_.topKairports(stoi(k))){
+                    cout << a << " | " ;
+                }
+                cout << endl;
+                lastPage();
+                return otherInfo();
+            case ('3'):
+                cout << "Do you want an airline filter?" << endl;
+                cout << endl << "Options:\n\t1-Yes\n\t2-No\n\t" <<endl;
+                char yn;
+                while(flag3) {
+                    cout << "Choose option:";
+                    cin >> yn;
+                    switch (yn) {
+                        case ('1'):
+                            filters = createVec();
+                            flag3 = 0;
+                            break;
+                        case ('2'):
+                            flag3 = 0;
+                            break;
+                        default:
+                            cout << "Not a valid option." << endl;
+                    }
+                }
+                d_.printArtPoints(filters);
+                lastPage();
+                return otherInfo();
+                 */
+            case ('b'):
+                return welcomePage();
+            case ('e'):
+                return exitProgram();
+
+            default:
+                cout << endl << "Not a valid option" << endl;
+        }
+    }
+}
+
 
 void lastPage() {
     cout << endl << endl;
