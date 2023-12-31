@@ -15,6 +15,7 @@ class Flight {
 public:
     Flight(Airport source, Airport target, Airline airline) : source(source), target(target), airline(airline) {}
     void printFlight();
+    Airline &getAirline();
 };
 
 
