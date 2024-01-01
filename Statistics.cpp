@@ -4,6 +4,7 @@
 
 #include "Statistics.h"
 #include <unordered_set>
+#include <algorithm>
 
 int Statistics::getNumAirports(Graph<Airport> g) {
     // tirei linha com um cout que estava a mais
@@ -406,3 +407,351 @@ int Statistics::numReachableCitiesXFlights(Graph<Airport> g, unordered_map<strin
         return topAirports;
     }
 
+
+
+void Statistics::bestFlightAirportToAirport(Graph<Airport> g, std::string source, std::string dest, unordered_map<string, Airport>& airportMap) {
+    unordered_map<Vertex<Airport>*, int> distance;
+    unordered_map<Vertex<Airport>*, Vertex<Airport>*> parent;
+    queue<Vertex<Airport>*> q;
+    for(Vertex<Airport>* b : g.getVertexSet()) {
+        b->setVisited(false);
+        distance[b] = INT16_MAX;
+    }
+
+    Vertex<Airport>* s = g.findVertex(airportMap.at(source));
+    Vertex<Airport>* d = g.findVertex(airportMap.at(dest));
+
+    distance[s] = 0;
+
+    q.push(s);
+    s->setVisited(true);
+    parent[s] = nullptr;
+
+
+    while (!q.empty()){
+
+        Vertex<Airport>* v = q.front();
+        v->setVisited(true);
+        q.pop();
+
+
+        for(Edge<Airport> e : v->getAdj()){
+            Vertex<Airport>* v1 = e.getDest();
+            if(!v1->isVisited()){
+                if(distance[v] + 1 < distance[v1]){
+                    parent[v1] = v;
+                    distance[v1] = distance[v] + 1;
+                }
+                q.push(v1);
+                v1->setVisited(true);
+            }
+        }
+    }
+    if (parent[d]) {
+        stack<Vertex<Airport>*> path;
+        Vertex<Airport>* current = d;
+        while (current != nullptr) {
+            path.push(current);
+            current = parent[current];
+        }
+        cout << '\n' << "The best way to get to: " << airportMap.at(dest).getName() << " from " << airportMap.at(source).getName() << " is with the following flights: " << endl;
+        Vertex<Airport>* last = nullptr;
+        while (!path.empty()) {
+            Vertex<Airport>* so;
+            Vertex<Airport>* de;
+            if(last == nullptr) {
+                so = path.top();
+                path.pop();
+                de = path.top();
+                path.pop();
+            }
+            else{
+                so = last;
+                de = path.top();
+                path.pop();
+            }
+            Flight f = findFlight(g, so->getInfo().getCode(), de->getInfo().getCode(), airportMap);
+            last = de;
+            f.printFlight();
+        }
+        cout << endl;
+    }
+}
+
+Flight Statistics::findFlight(Graph<Airport> g, std::string source, std::string dest, unordered_map<std::string, Airport> &airportMap) {
+
+    Vertex<Airport>* s = g.findVertex(airportMap.at(source));
+    Vertex<Airport>* d = g.findVertex(airportMap.at(dest));
+
+    for(Edge<Airport> e : s->getAdj()){
+        if(e.getDest() == d){
+            return e.getFlight();
+        }
+    }
+}
+
+void Statistics::bestFlightCityToCity(Graph<Airport> g, std::string sourceCity, std::string SourceCountry, std::string destCity, std::string destCountry, unordered_map<string, City> cityMap, unordered_map<string,Airport> airportMap) {
+    string sourceKey = sourceCity + SourceCountry;
+    string destKey = destCity + destCountry;
+    City source = cityMap.at(sourceKey);
+    City dest = cityMap.at(destKey);
+
+    unordered_map<int, unordered_map<Vertex<Airport>*, Vertex<Airport>*>> paths;
+    int minDistance = INT16_MAX;
+    for (Airport a: source.getAirports()) {
+        for(Airport b : dest.getAirports()) {
+            unordered_map<Vertex<Airport>*, int> distance;
+            unordered_map<Vertex<Airport>*, Vertex<Airport>*> parent;
+            queue<Vertex<Airport>*> q;
+            for(Vertex<Airport>* y : g.getVertexSet()) {
+                y->setVisited(false);
+                distance[y] = INT16_MAX;
+            }
+
+            Vertex<Airport>* s = g.findVertex(a);
+            Vertex<Airport>* d = g.findVertex(b);
+
+            distance[s] = 0;
+
+            q.push(s);
+            s->setVisited(true);
+            parent[s] = nullptr;
+
+
+            while (!q.empty()){
+
+                Vertex<Airport>* v = q.front();
+                v->setVisited(true);
+                q.pop();
+
+
+                for(Edge<Airport> e : v->getAdj()){
+                    Vertex<Airport>* v1 = e.getDest();
+                    if(!v1->isVisited()){
+                        if(distance[v] + 1 < distance[v1]){
+                            parent[v1] = v;
+                            distance[v1] = distance[v] + 1;
+                        }
+                        q.push(v1);
+                        v1->setVisited(true);
+                    }
+                }
+            }
+            if(distance[d] < minDistance){
+                minDistance = distance[d];
+            }
+            paths[distance[d]] = parent;
+        }
+    }
+    unordered_map<Vertex<Airport>*, Vertex<Airport>*> parent = paths[minDistance];
+    for(Airport e : dest.getAirports()){
+        Vertex<Airport>* v = g.findVertex(e);
+        if (parent[v]) {
+            stack<Vertex<Airport>*> path;
+            Vertex<Airport>* current = v;
+            while (current != nullptr) {
+                path.push(current);
+                current = parent[current];
+            }
+            cout << '\n' << "The best way to get to: "<< e.getName() << " on " << destCity << "," << destCountry << " from " << sourceCity << "," << SourceCountry << " is with the following flights: " << endl;
+            Vertex<Airport>* last = nullptr;
+            while (!path.empty()) {
+                Vertex<Airport>* so;
+                Vertex<Airport>* de;
+                if(last == nullptr) {
+                    so = path.top();
+                    path.pop();
+                    de = path.top();
+                    path.pop();
+                }
+                else{
+                    so = last;
+                    de = path.top();
+                    path.pop();
+                }
+                Flight f = findFlight(g, so->getInfo().getCode(), de->getInfo().getCode(), airportMap);
+                last = de;
+                f.printFlight();
+            }
+            cout << endl;
+        }
+    }
+}
+
+void Statistics::bestFlightAirportToCity(Graph<Airport> g, std::string source, std::string destCity, std::string destCountry, unordered_map<std::string, City> cityMap, unordered_map<std::string, Airport> airportMap) {
+    unordered_map<Vertex<Airport>*, int> distance;
+    queue<Vertex<Airport>*> q;
+    unordered_map<int, unordered_map<Vertex<Airport>*, Vertex<Airport>*>> paths;
+    int minDistance = INT16_MAX;
+    string destKey = destCity + destCountry;
+    City c = cityMap.at(destKey);
+
+    for(Vertex<Airport>* b : g.getVertexSet()) {
+        b->setVisited(false);
+        distance[b] = INT16_MAX;
+    }
+    Airport s = airportMap.at(source);
+    for(Airport a : c.getAirports()){
+        unordered_map<Vertex<Airport>*, int> distance;
+        unordered_map<Vertex<Airport>*, Vertex<Airport>*> parent;
+        queue<Vertex<Airport>*> q;
+        for(Vertex<Airport>* y : g.getVertexSet()) {
+            y->setVisited(false);
+            distance[y] = INT16_MAX;
+        }
+
+        Vertex<Airport>* so = g.findVertex(s);
+        Vertex<Airport>* d = g.findVertex(a);
+
+        distance[so] = 0;
+
+        q.push(so);
+        so->setVisited(true);
+        parent[so] = nullptr;
+
+
+        while (!q.empty()){
+
+            Vertex<Airport>* v = q.front();
+            v->setVisited(true);
+            q.pop();
+
+
+            for(Edge<Airport> e : v->getAdj()){
+                Vertex<Airport>* v1 = e.getDest();
+                if(!v1->isVisited()){
+                    if(distance[v] + 1 < distance[v1]){
+                        parent[v1] = v;
+                        distance[v1] = distance[v] + 1;
+                    }
+                    q.push(v1);
+                    v1->setVisited(true);
+                }
+            }
+        }
+        if(distance[d] < minDistance){
+            minDistance = distance[d];
+        }
+        paths[distance[d]] = parent;
+    }
+    unordered_map<Vertex<Airport>*, Vertex<Airport>*> parent = paths[minDistance];
+    for(Airport e : c.getAirports()){
+        Vertex<Airport>* v = g.findVertex(e);
+        if (parent[v]) {
+            stack<Vertex<Airport>*> path;
+            Vertex<Airport>* current = v;
+            while (current != nullptr) {
+                path.push(current);
+                current = parent[current];
+            }
+            cout << '\n' << "The best way to get to: "<< e.getName() << " on " << destCity << "," << destCountry << " from " << airportMap.at(source).getName() << " is with the following flights: " << endl;
+            Vertex<Airport>* last = nullptr;
+            while (!path.empty()) {
+                Vertex<Airport>* so;
+                Vertex<Airport>* de;
+                if(last == nullptr) {
+                    so = path.top();
+                    path.pop();
+                    de = path.top();
+                    path.pop();
+                }
+                else{
+                    so = last;
+                    de = path.top();
+                    path.pop();
+                }
+                Flight f = findFlight(g, so->getInfo().getCode(), de->getInfo().getCode(), airportMap);
+                last = de;
+                f.printFlight();
+            }
+            cout << endl;
+        }
+    }
+}
+
+void Statistics::bestFlightCityToAirport(Graph<Airport> g, std::string sourceCity, std::string sourceCountry, std::string dest, unordered_map<std::string, City> cityMap, unordered_map<std::string, Airport> airportMap) {
+    unordered_map<Vertex<Airport>*, int> distance;
+    unordered_map<int, unordered_map<Vertex<Airport>*, Vertex<Airport>*>> paths;
+    for(Vertex<Airport>* b : g.getVertexSet()) {
+        b->setVisited(false);
+        distance[b] = INT16_MAX;
+    }
+    int minDistance = INT16_MAX;
+    string sourceKey = sourceCity + sourceCountry;
+    City origin = cityMap.at(sourceKey);
+
+    for(Airport a : origin.getAirports()){
+        unordered_map<Vertex<Airport>*, int> distance;
+        unordered_map<Vertex<Airport>*, Vertex<Airport>*> parent;
+        queue<Vertex<Airport>*> q;
+        for(Vertex<Airport>* y : g.getVertexSet()) {
+            y->setVisited(false);
+            distance[y] = INT16_MAX;
+        }
+
+        Vertex<Airport>* so = g.findVertex(a);
+        Vertex<Airport>* d = g.findVertex(airportMap.at(dest));
+
+        distance[so] = 0;
+
+        q.push(so);
+        so->setVisited(true);
+        parent[so] = nullptr;
+
+
+        while (!q.empty()){
+
+            Vertex<Airport>* v = q.front();
+            v->setVisited(true);
+            q.pop();
+
+
+            for(Edge<Airport> e : v->getAdj()){
+                Vertex<Airport>* v1 = e.getDest();
+                if(!v1->isVisited()){
+                    if(distance[v] + 1 < distance[v1]){
+                        parent[v1] = v;
+                        distance[v1] = distance[v] + 1;
+                    }
+                    q.push(v1);
+                    v1->setVisited(true);
+                }
+            }
+        }
+        if(distance[d] < minDistance){
+            minDistance = distance[d];
+        }
+        paths[distance[d]] = parent;
+    }
+    unordered_map<Vertex<Airport>*, Vertex<Airport>*> parent = paths[minDistance];
+    Vertex<Airport>* v = g.findVertex(airportMap.at(dest));
+    if (parent[v]) {
+        stack<Vertex<Airport>*> path;
+        Vertex<Airport>* current = v;
+        while (current != nullptr) {
+            path.push(current);
+            current = parent[current];
+        }
+        cout << '\n' << "The best way to get to: " << airportMap.at(dest).getName() << " from " << sourceCity << "," << sourceCountry << " is with the following flights: " << endl;
+        Vertex<Airport>* last = nullptr;
+        while (!path.empty()) {
+            Vertex<Airport>* so;
+            Vertex<Airport>* de;
+            if(last == nullptr) {
+                so = path.top();
+                path.pop();
+                de = path.top();
+                path.pop();
+            }
+            else{
+                so = last;
+                de = path.top();
+                path.pop();
+            }
+            Flight f = findFlight(g, so->getInfo().getCode(), de->getInfo().getCode(), airportMap);
+            last = de;
+            f.printFlight();
+        }
+        cout << endl;
+    }
+}
