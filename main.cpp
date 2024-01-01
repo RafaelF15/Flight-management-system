@@ -72,7 +72,7 @@ void getStatistics(){
     cout << endl << "=========GET STATISTICS=========" << endl;
     cout << endl;
     cout << "Choose the type of statistics!" << endl;
-    cout << endl << "Options:\n\t1-Global\n\t2-City\n\t3-Airline\n\t4-Airport\n\tb-Back\n\te-Exit"<<endl;
+    cout << endl << "Options:\n\t1-Global\n\t2-City\n\t3-Airline\n\tb-Back\n\te-Exit"<<endl;
     char inputType;
     string inputDestination;
     while (true){
@@ -88,14 +88,6 @@ void getStatistics(){
            case ('3'):
                airlineStatistic();
                return getStatistics();
-           case ('4'):
-               airportStatistic();
-               return getStatistics();
-                     /*
-           case ('5'):
-               airportStatistic();
-               return getStatistics();
-               */
             case ('b'):
                 return welcomePage();
             case ('e'):
@@ -233,47 +225,12 @@ void airlineStatistic(){
         }
     }
 }
-void airportStatistic(){
-    cout << endl << "=========AIRPORT STATISTICS=========" << endl;
-    cout << endl;
-    string code;
-    cout << "Insert the airport code:" << endl;
-    cin >> code;
-    auto it= airportMap.find(code);
-    if (it == airportMap.end()) {
-        cout << "The airport with code <" << code << "> does not exist. Try again!" << endl;
-        airportStatistic();
-    }
-    cout << endl << "Choose the statistic!" << endl;
-    cout << endl << "Options:\n\t1-Number of flights to different countries\n\tb-Back\n\te-Exit"<<endl;
-
-    char option;
-
-    while (true){
-        cout << "Choose option:";
-        cin >> option;
-
-        switch (option) {
-            case ('1'):
-                Statistics::getNumFlightsFromAirportToDifferentCountries(g,airportMap,code);
-                lastPage();
-                return getStatistics();
-            case ('b'):
-                return getStatistics();
-            case ('e'):
-                return exitProgram();
-
-            default:
-                cout << endl << "Not a valid option" << endl;
-        }
-    }
-}
 
 void getApMethods(){
     cout << endl << "=========AIRPORT METHODS=========" << endl;
     cout << endl;
     cout << endl << "Choose the method!" << endl;
-    cout << endl << "Options:\n\t1-Total flights from airport\n\t2-Total airlines from airport\n\t3-Total airport destinations from airport\n\t4-Total city destinations from airport\n\t5-Total country destinations from airport\n\t6-Number of reachable airports with maximum of X stops from airport\n\t7-Number of reachable cities with maximum of X stops from airport\n\t8-Number of reachable countries with maximum of X stops from airport\n\tb-Back\n\te-Exit"<<endl;
+    cout << endl << "Options:\n\t1-Total flights from airport\n\t2-Total airlines from airport\n\t3-Total airport destinations from airport\n\t4-Total city destinations from airport\n\t5-Total country destinations from airport\n\t6-Number of reachable airports with maximum of X stops from airport\n\t7-Number of reachable cities with maximum of X stops from airport\n\t8-Number of reachable countries with maximum of X stops from airport\n\t9-Number of flights to different countries\n\tb-Back\n\te-Exit"<<endl;
     char option;
     string max;
     string code;
@@ -395,6 +352,17 @@ void getApMethods(){
                     getApMethods();
                 }
                 Statistics::numReachableCountriesXFlights(g,airportMap,code,max3);
+                lastPage();
+                return getApMethods();
+            case ('9'):
+                cout << "Insert the airport code:" << endl;
+                cin >> code;
+                it = airportMap.find(code);
+                if (it == airportMap.end()) {
+                    cout << "There is no Airport with code <" << code << "> Try again!" << endl;
+                    getApMethods();
+                }
+                Statistics::getNumFlightsFromAirportToDifferentCountries(g,airportMap,code);
                 lastPage();
                 return getApMethods();
             case ('b'):
