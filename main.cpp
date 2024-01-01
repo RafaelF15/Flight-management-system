@@ -562,9 +562,9 @@ void getFlights() {
             }
         }
         for (const auto& code : excludedAirlines) {
-            auto it = airportMap.find(code);
-            if (it == airportMap.end()) {
-                cout << "You typed invalid airports. For example, there is no airport with code <" << codigo << "> Try again!" << endl;
+            auto it = airlineMap.find(code);
+            if (it == airlineMap.end()) {
+                cout << "You typed invalid airlines. For example, there is no airline with code <" << codigo << "> Try again!" << endl;
                 getFlights();
             }
         }
