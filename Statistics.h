@@ -39,6 +39,7 @@ public:
     static Flight findFlight(Graph<Airport> g, string source, string dest, unordered_map<string, Airport>& airportMap);
     static void bestFlightCityToCity(Graph<Airport> g, string sourceCity, string SourceCountry, string destCity, string destCountry, unordered_map<string, City> cityMap, unordered_map<string, Airport> airportMap);
     static void bestFlightAirportToCity(Graph<Airport> g, string source, string destCity, string destCountry, unordered_map<string, City> cityMap, unordered_map<string, Airport> airportMap);
+    static void bestFlightCityToAirport(Graph<Airport> g, string sourceCity, string sourceCountry, string dest, unordered_map<string, City> cityMap, unordered_map<string, Airport> airportMap);
     static vector<string> getTopAirportsByFlights(Graph<Airport> g, int k);
 };
 #endif //FLIGHT_MANAGEMENT_SYSTEM_STATISTICS_H
