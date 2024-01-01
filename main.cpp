@@ -568,7 +568,16 @@ int main() {
     //Statistics::bestFlightCityToCity(g, "Porto", "Portugal", "London", "United Kingdom", cityMap, airportMap);
     //Statistics::bestFlightAirportToCity(g, "OPO", "London", "United Kingdom", cityMap, airportMap, excludedAirlines);
     //Statistics::bestFlightCityToAirport(g, "London", "United Kingdom", "OPO" , cityMap, airportMap);
-    welcomePage();
+
+    Graph<Airport> g1 = g;
+    for(Vertex<Airport>* v : g1.getVertexSet()){
+        for(Edge<Airport> e : v->getAdj()){
+            Flight t(e.getDest()->getInfo(), v->getInfo(), e.getFlight().getAirline());
+            g1.addEdge(e.getDest()->getInfo(), v->getInfo(), t);
+        }
+    }
+    Statistics::articulationPoints(&g1, airportMap);
+    //welcomePage();
 
 
     return 0;

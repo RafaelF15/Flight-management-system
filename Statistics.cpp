@@ -199,9 +199,10 @@ int Statistics::findDiameter(Graph<Airport> g) {
     return diameter;
 }
 
-int Statistics::articulationPoints(Graph<Airport> *g, unordered_map<string, Airport> airportMap) {
+int Statistics::articulationPoints(Graph<Airport>* g, unordered_map<string, Airport> airportMap) {
     unordered_set<string> res;
     int index = 1;
+
     for(Vertex<Airport>* v : g->getVertexSet()){
         v->setVisited(false);
         v->setProcessing(false);
