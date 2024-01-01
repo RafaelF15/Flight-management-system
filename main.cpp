@@ -31,7 +31,6 @@ unordered_map<string, Airline> airlineMap; //igual
 
 void welcomePage() {
     cout << endl << "=========WELCOME PAGE=========" << endl;
-    //cout << Statistics::getNumFlightsFromCityToDifferentCountries(g,cityMap,"Porto","Portugal");
     cout << endl << "Options:\n\t1-Get statistics\n\t2-Airport methods\n\t3-Other methods\n\t4-Search\n\t5-Credits\n\te-Exit" <<endl;
     char input;
     while (true){
@@ -541,8 +540,8 @@ void credits() {
     cout << endl << "=========CREDITS=========" << endl;
     cout << endl;
     cout << "Made by:" << endl;
-    cout << "André Santos, up202207724" << endl; //ver problema dos acentos com outros pcs
-    cout << "Iara Brás, up202208825" << endl; //mesmo que em cima
+    cout << "Andre Santos, up202207724" << endl; //ver problema dos acentos com outros pcs
+    cout << "Iara Bras, up202208825" << endl; //mesmo que em cima
     cout << "Rafael Costa, up202205013" << endl;
     cout << endl << endl << "Options:\n\tb-Back\n\te-Exit"<< endl;
     char input;
