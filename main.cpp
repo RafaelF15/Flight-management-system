@@ -7,19 +7,15 @@
 #include "Reading.h"
 #include "Statistics.h"
 #include <unordered_map>
-#include <typeinfo>
-#include <sstream>
+
 
 using namespace std;
 
 void welcomePage();
-
 void getStatistics();
-
 void globalStatistic();
 void cityStatistic();
 void airlineStatistic();
-void airportStatistic();
 void getApMethods();
 void otherInfo();
 void search();
@@ -117,21 +113,6 @@ void globalStatistic(){
                 cout << '\n' << "There are " << Statistics::getNumFlights(g) << " flights available." << endl;
                 lastPage();
                 return getStatistics();
-                /*
-            case ('3'):
-                cout << "Number of countries: " << d_.totalCountries() << endl;
-                lastPage();
-                return getStatistics();
-            case ('4'):
-                cout << "Number of airlines: " << d_.totalAirlines() << endl;
-                lastPage();
-                return getStatistics();
-            case ('5'):
-                cout << "Number of cities: " << d_.totalCities() << endl;
-                lastPage();
-                return getStatistics();
-
-                 */
             case ('b'):
                 return getStatistics();
             case ('e'):
@@ -172,16 +153,6 @@ void cityStatistic(){
                 Statistics::getNumFlightsFromCityToDifferentCountries(g,cityMap,city,country);
                 lastPage();
                 return getStatistics();
-                 /*
-            case ('3'):
-                cout << "Number of airlines: " <<  d_.nAirlines2(c) << endl;
-                lastPage();
-                return getStatistics();
-            case ('4'):
-                cout << "Number of destinations: " << d_.nDestinations2(c) << endl;
-                lastPage();
-                return getStatistics();
-                 */
             case ('b'):
                 return getStatistics();
             case ('e'):
@@ -540,6 +511,10 @@ void getFlights() {
     else if (yn == '2') {
         excludedAirlines = {};
     }
+    else {
+        cout << "Invalid input. Try again!";
+        getFlights();
+    }
 
     cout << "Choose the type of origin:" << endl;
     cout << endl << "Options:\n\t1-Airport\n\t2-City\n\tb-Back\n\te-Exit"<<endl;
@@ -603,7 +578,6 @@ void getFlights() {
 
     char inputTypeD;
     string inputDestination;
-    int inputRadiusD = 0;
     int flag2 = 1;
     while (flag2){
         cout << "Choose option:";
@@ -625,7 +599,6 @@ void getFlights() {
                     Statistics::bestFlightCityToAirport(g,source_c,source_p, dest_a,cityMap, airportMap, excludedAirlines);
                     excludedAirlines = {};
                 }
-                //flag2 = 0;
                 lastPage();
                 return getFlights();
             case ('2'):
@@ -646,7 +619,6 @@ void getFlights() {
                     Statistics::bestFlightCityToCity(g,source_c,source_p,dest_c,dest_p,cityMap,airportMap,excludedAirlines);
                     excludedAirlines = {};
                 }
-                flag2 = 0;
                 lastPage();
                 return welcomePage();
             case ('b'):
@@ -659,8 +631,6 @@ void getFlights() {
         }
     }
 
-    //lastPage();
-    //return welcomePage();
 }
 
 
@@ -714,56 +684,13 @@ void exitProgram() {
 
 
 int main() {
-     // Graph<Airport> g;  Main graph, has airports as vertexes and flights as edges, edge weight has been adapted to save the airline that is responsible for the flight;
-     // inicializado em cima do ficheiro, ver
-    //unordered_map<string, City> cityMap;
-    //IMPORTANT : whenever using the citymap, the keys are of the following format: "ParisFrance"  There are multiple cities with the same name in different countries;
-    //You can just use string concatenation: Key = city + country;
-    // unordered_map<string, Airline> airlineMap; // Find airline by code
-    // unordered_map<string, Airport> airportMap; Find airport by code
     Reading::readAirports(g, airportMap,
                           cityMap); // Reads airports from files and adds them to the graph as vertexes (also puts them in the airline map for fast searching if needed)
     Reading::readAirlines(airlineMap); // Reads airlines and puts them on the airline map for fast searching if needed
     Reading::readFlights(g, airportMap,
                          airlineMap); // Reads flights from the file, adds them to the graph as vertexes, uses the two maps mentioned earlier to get airlines or airports from their code;
-    // All read functions are now functional
-    /*
-    Statistics::getNumFlights(g);
-    Statistics::getNumAirports(g);
-    Statistics::getNumFlightsFromAirport(g, airportMap, "ORY");
-    Statistics::getNumFlightsFromAirport(g, airportMap, "CDG");
-    Statistics::getNumFlightsPerCity(g, cityMap, "Paris", "France");
-    Statistics::getNumFlightsPerAirline(airlineMap, "IBE");
-    Statistics::getNumFlightsFromAirportToDifferentCountries(g, airportMap, "JFK");
-    Statistics::getNumFlightsFromCityToDifferentCountries(g, cityMap, "Paris", "France");
-    Statistics::getNumOfReachableAirportsFromAirport(g, airportMap, "SSR");
-    Statistics::getNumOfReachableCitiesFromAirport(g, airportMap, "SSR");
-    Statistics::getNumOfReachableCountriesFromAirport(g, airportMap, "SSR");
 
-    Statistics::numReachableAirportsXFlights(g, airportMap, "SSR", 2);
-
-    //Statistics::findDiameter(g);
-    Statistics::articulationPoints(&g);
-    Statistics::numReachableCitiesXFlights(g, airportMap,"SSR", 2);
-    Statistics::numReachableCountriesXFlights(g, airportMap,"SSR", 2);
-
-    vector<string> topAirports = Statistics::getTopAirportsByFlights(g, 5);
-
-    */
-    //Statistics::articulationPoints(&g, airportMap);
-    //Statistics::findDiameter(g);
-
-    //unordered_set<string> excludedAirlines;
-    //excludedAirlines.insert("TAP");
-
-    //Statistics::bestFlightAirportToAirport(g, "OPO", "LGW", airportMap, excludedAirlines);
-    //Statistics::bestFlightCityToCity(g, "Porto", "Portugal", "London", "United Kingdom", cityMap, airportMap,excludedAirlines);
-    //Statistics::bestFlightAirportToCity(g, "OPO", "London", "United Kingdom", cityMap, airportMap,excludedAirlines);
-    //Statistics::bestFlightAirportToCity(g, "OPO", "London", "United Kingdom", cityMap, airportMap);
-    //Statistics::bestFlightCityToAirport(g, "London", "United Kingdom", "OPO" , cityMap, airportMap);
     welcomePage();
-
-
 
     return 0;
 
