@@ -350,38 +350,48 @@ int Statistics::numReachableCitiesXFlights(Graph<Airport> g, unordered_map<strin
 
 
 void Statistics::bestFlightAirportToAirportByCode(Graph<Airport> g, std::string source, std::string dest, unordered_map<string, Airport>& airportMap) {
+    unordered_map<Vertex<Airport>*, int> distance;
     unordered_map<Vertex<Airport>*, Vertex<Airport>*> parent;
     queue<Vertex<Airport>*> q;
-    for(Vertex<Airport>* b : g.getVertexSet()) b->setVisited(false);
+    for(Vertex<Airport>* b : g.getVertexSet()) {
+        b->setVisited(false);
+        distance[b] = INT16_MAX;
+    }
 
     Vertex<Airport>* s = g.findVertex(airportMap.at(source));
     Vertex<Airport>* d = g.findVertex(airportMap.at(dest));
+
+    distance[s] = 0;
 
     q.push(s);
     s->setVisited(true);
     parent[s] = nullptr;
 
-    bool destinationFound = false;
 
-    while (!q.empty() && !destinationFound){
+    while (!q.empty()){
 
         Vertex<Airport>* v = q.front();
+        v->setVisited(true);
         q.pop();
 
 
         for(Edge<Airport> e : v->getAdj()){
             Vertex<Airport>* v1 = e.getDest();
             if(!v1->isVisited()){
-                parent[v1] = v;
+                cout << '\n' <<"Visiting " << v1->getInfo().getCode() << endl;
+                if(distance[v] + 1 < distance[v1]){
+                    parent[v1] = v;
+                    cout << v1->getInfo().getCode() << " new parent is: " << v->getInfo().getCode() << endl;
+                    distance[v1] = distance[v] + 1;
+                    cout<< '\n' << v1->getInfo().getCode() << " :: " << distance[v1];
+                }
                 q.push(v1);
                 v1->setVisited(true);
-                if (v1 == d) {
-                    destinationFound = true;
-                }
             }
         }
     }
-    if (destinationFound && parent[d]) {
+    cout << '\n' << d->getInfo().getCode() << " has parent: " << parent[d]->getInfo().getCode() << endl;
+    if (parent[d]) {
         stack<Vertex<Airport>*> path;
         Vertex<Airport>* current = d;
         while (current != nullptr) {
@@ -389,7 +399,6 @@ void Statistics::bestFlightAirportToAirportByCode(Graph<Airport> g, std::string 
             current = parent[current];
         }
 
-        cout << "Shortest path from " << source << " to " << dest << ": ";
         while (!path.empty()) {
             cout << path.top()->getInfo().getCode() << " ";
             path.pop();
