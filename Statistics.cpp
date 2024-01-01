@@ -1,11 +1,8 @@
-//
-// Created by Rafael on 27/12/2023.
-//
+
 
 #include "Statistics.h"
 #include <unordered_set>
 #include <algorithm>
-#include <cmath>
 #include <cstdint>
 
 int Statistics::getNumAirports(Graph<Airport> g) {

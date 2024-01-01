@@ -27,10 +27,10 @@ void getFlights();
 void exitProgram();
 void lastPage();
 void credits();
-Graph<Airport> g; //inicializei aqui porque não estava a reconhecer se fosse dentro do main
-unordered_map<string, Airport> airportMap; //igual a cima
-unordered_map<string, City> cityMap; //same
-unordered_map<string, Airline> airlineMap; //igual
+Graph<Airport> g;
+unordered_map<string, Airport> airportMap;
+unordered_map<string, City> cityMap;
+unordered_map<string, Airline> airlineMap;
 
 void welcomePage() {
     cout << endl << "=========WELCOME PAGE=========" << endl;

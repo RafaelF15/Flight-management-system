@@ -1,6 +1,4 @@
-//
-// Created by Rafael on 17/12/2023.
-//
+
 
 #ifndef FLIGHT_MANAGEMENT_SYSTEM_GRAPH_H
 #define FLIGHT_MANAGEMENT_SYSTEM_GRAPH_H

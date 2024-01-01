@@ -1,6 +1,4 @@
-//
-// Created by Rafael on 17/12/2023.
-//
+
 
 #include "Reading.h"
 #include "Graph.h"
@@ -16,12 +14,6 @@
 
 using namespace std;
 
-/*
- * Ideas for the reading process:
- * Read the airports first -> They are the Vertexes of the graph;
- * Read the airlines saving them in a hash map, so we can find the airline when reading the flights;
- * Read the flights -> they are the Edges of the graph;
- */
 
 void Reading::readAirports(Graph<Airport> &g, unordered_map<string, Airport>& m, unordered_map<string,City>& cityMap) {
     string code, name, city, country, header;
