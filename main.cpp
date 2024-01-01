@@ -561,12 +561,14 @@ int main() {
     //Statistics::articulationPoints(&g, airportMap);
     //Statistics::findDiameter(g);
 
+    //unordered_set<string> excludedAirlines;
+    //excludedAirlines.insert("TAP");
 
-    //Statistics::bestFlightAirportToAirportByCode(g, "OPO", "SSR", airportMap);
+    //Statistics::bestFlightAirportToAirport(g, "OPO", "LGW", airportMap, excludedAirlines);
     //Statistics::bestFlightCityToCity(g, "Porto", "Portugal", "London", "United Kingdom", cityMap, airportMap);
-    Statistics::bestFlightAirportToCity(g, "OPO", "London", "United Kingdom", cityMap, airportMap);
+    //Statistics::bestFlightAirportToCity(g, "OPO", "London", "United Kingdom", cityMap, airportMap, excludedAirlines);
     //Statistics::bestFlightCityToAirport(g, "London", "United Kingdom", "OPO" , cityMap, airportMap);
-    //welcomePage();
+    welcomePage();
 
 
     return 0;

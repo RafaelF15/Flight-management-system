@@ -5,6 +5,7 @@
 #include "Statistics.h"
 #include <unordered_set>
 #include <algorithm>
+#include <cmath>
 
 int Statistics::getNumAirports(Graph<Airport> g) {
     // tirei linha com um cout que estava a mais
@@ -349,7 +350,7 @@ int Statistics::numReachableCitiesXFlights(Graph<Airport> g, unordered_map<strin
 
 
 
-void Statistics::bestFlightAirportToAirport(Graph<Airport> g, std::string source, std::string dest, unordered_map<string, Airport>& airportMap) {
+void Statistics::bestFlightAirportToAirport(Graph<Airport> g, std::string source, std::string dest, unordered_map<string, Airport>& airportMap, unordered_set<string>& excludedAirlines) {
     unordered_map<Vertex<Airport>*, int> distance;
     unordered_map<Vertex<Airport>*, Vertex<Airport>*> parent;
     queue<Vertex<Airport>*> q;
@@ -376,14 +377,16 @@ void Statistics::bestFlightAirportToAirport(Graph<Airport> g, std::string source
 
 
         for(Edge<Airport> e : v->getAdj()){
-            Vertex<Airport>* v1 = e.getDest();
-            if(!v1->isVisited()){
-                if(distance[v] + 1 < distance[v1]){
-                    parent[v1] = v;
-                    distance[v1] = distance[v] + 1;
+            if(excludedAirlines.find(e.getFlight().getAirline().getCode()) == excludedAirlines.end()) {
+                Vertex<Airport> *v1 = e.getDest();
+                if (!v1->isVisited()) {
+                    if (distance[v] + 1 < distance[v1]) {
+                        parent[v1] = v;
+                        distance[v1] = distance[v] + 1;
+                    }
+                    q.push(v1);
+                    v1->setVisited(true);
                 }
-                q.push(v1);
-                v1->setVisited(true);
             }
         }
     }
@@ -410,7 +413,7 @@ void Statistics::bestFlightAirportToAirport(Graph<Airport> g, std::string source
                 de = path.top();
                 path.pop();
             }
-            Flight f = findFlight(g, so->getInfo().getCode(), de->getInfo().getCode(), airportMap);
+            Flight f = findFlight(g, so->getInfo().getCode(), de->getInfo().getCode(), airportMap, excludedAirlines);
             last = de;
             f.printFlight();
         }
@@ -418,19 +421,19 @@ void Statistics::bestFlightAirportToAirport(Graph<Airport> g, std::string source
     }
 }
 
-Flight Statistics::findFlight(Graph<Airport> g, std::string source, std::string dest, unordered_map<std::string, Airport> &airportMap) {
+Flight Statistics::findFlight(Graph<Airport> g, std::string source, std::string dest, unordered_map<std::string, Airport> &airportMap, unordered_set<string>& excludedAirlines) {
 
     Vertex<Airport>* s = g.findVertex(airportMap.at(source));
     Vertex<Airport>* d = g.findVertex(airportMap.at(dest));
 
     for(Edge<Airport> e : s->getAdj()){
-        if(e.getDest() == d){
+        if(e.getDest() == d && excludedAirlines.find(e.getFlight().getAirline().getCode()) == excludedAirlines.end()){
             return e.getFlight();
         }
     }
 }
 
-void Statistics::bestFlightCityToCity(Graph<Airport> g, std::string sourceCity, std::string SourceCountry, std::string destCity, std::string destCountry, unordered_map<string, City> cityMap, unordered_map<string,Airport> airportMap) {
+void Statistics::bestFlightCityToCity(Graph<Airport> g, std::string sourceCity, std::string SourceCountry, std::string destCity, std::string destCountry, unordered_map<string, City> cityMap, unordered_map<string,Airport> airportMap, unordered_set<string>& excludedAirlines) {
     string sourceKey = sourceCity + SourceCountry;
     string destKey = destCity + destCountry;
     City source = cityMap.at(sourceKey);
@@ -466,6 +469,8 @@ void Statistics::bestFlightCityToCity(Graph<Airport> g, std::string sourceCity, 
 
 
                 for(Edge<Airport> e : v->getAdj()){
+                    if(excludedAirlines.find(e.getFlight().getAirline().getCode()) != excludedAirlines.end())
+                        continue;
                     Vertex<Airport>* v1 = e.getDest();
                     if(!v1->isVisited()){
                         if(distance[v] + 1 < distance[v1]){
@@ -509,7 +514,7 @@ void Statistics::bestFlightCityToCity(Graph<Airport> g, std::string sourceCity, 
                     de = path.top();
                     path.pop();
                 }
-                Flight f = findFlight(g, so->getInfo().getCode(), de->getInfo().getCode(), airportMap);
+                Flight f = findFlight(g, so->getInfo().getCode(), de->getInfo().getCode(), airportMap, excludedAirlines);
                 last = de;
                 f.printFlight();
             }
@@ -518,7 +523,7 @@ void Statistics::bestFlightCityToCity(Graph<Airport> g, std::string sourceCity, 
     }
 }
 
-void Statistics::bestFlightAirportToCity(Graph<Airport> g, std::string source, std::string destCity, std::string destCountry, unordered_map<std::string, City> cityMap, unordered_map<std::string, Airport> airportMap) {
+void Statistics::bestFlightAirportToCity(Graph<Airport> g, std::string source, std::string destCity, std::string destCountry, unordered_map<std::string, City> cityMap, unordered_map<std::string, Airport> airportMap, unordered_set<string>& excludedAirlines) {
     unordered_map<Vertex<Airport>*, int> distance;
     queue<Vertex<Airport>*> q;
     unordered_map<int, unordered_map<Vertex<Airport>*, Vertex<Airport>*>> paths;
@@ -558,6 +563,8 @@ void Statistics::bestFlightAirportToCity(Graph<Airport> g, std::string source, s
 
 
             for(Edge<Airport> e : v->getAdj()){
+                if(excludedAirlines.find(e.getFlight().getAirline().getCode()) != excludedAirlines.end())
+                    continue;
                 Vertex<Airport>* v1 = e.getDest();
                 if(!v1->isVisited()){
                     if(distance[v] + 1 < distance[v1]){
@@ -600,7 +607,7 @@ void Statistics::bestFlightAirportToCity(Graph<Airport> g, std::string source, s
                     de = path.top();
                     path.pop();
                 }
-                Flight f = findFlight(g, so->getInfo().getCode(), de->getInfo().getCode(), airportMap);
+                Flight f = findFlight(g, so->getInfo().getCode(), de->getInfo().getCode(), airportMap, excludedAirlines);
                 last = de;
                 f.printFlight();
             }
@@ -609,7 +616,7 @@ void Statistics::bestFlightAirportToCity(Graph<Airport> g, std::string source, s
     }
 }
 
-void Statistics::bestFlightCityToAirport(Graph<Airport> g, std::string sourceCity, std::string sourceCountry, std::string dest, unordered_map<std::string, City> cityMap, unordered_map<std::string, Airport> airportMap) {
+void Statistics::bestFlightCityToAirport(Graph<Airport> g, std::string sourceCity, std::string sourceCountry, std::string dest, unordered_map<std::string, City> cityMap, unordered_map<std::string, Airport> airportMap, unordered_set<string>& excludedAirlines) {
     unordered_map<Vertex<Airport>*, int> distance;
     unordered_map<int, unordered_map<Vertex<Airport>*, Vertex<Airport>*>> paths;
     for(Vertex<Airport>* b : g.getVertexSet()) {
@@ -647,6 +654,8 @@ void Statistics::bestFlightCityToAirport(Graph<Airport> g, std::string sourceCit
 
 
             for(Edge<Airport> e : v->getAdj()){
+                if(excludedAirlines.find(e.getFlight().getAirline().getCode()) != excludedAirlines.end())
+                    continue;
                 Vertex<Airport>* v1 = e.getDest();
                 if(!v1->isVisited()){
                     if(distance[v] + 1 < distance[v1]){
@@ -688,10 +697,11 @@ void Statistics::bestFlightCityToAirport(Graph<Airport> g, std::string sourceCit
                 de = path.top();
                 path.pop();
             }
-            Flight f = findFlight(g, so->getInfo().getCode(), de->getInfo().getCode(), airportMap);
+            Flight f = findFlight(g, so->getInfo().getCode(), de->getInfo().getCode(), airportMap, excludedAirlines);
             last = de;
             f.printFlight();
         }
         cout << endl;
     }
 }
+
