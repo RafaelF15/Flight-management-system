@@ -160,7 +160,7 @@ void cityStatistic(){
         cityStatistic();
     }
     cout << "Choose the statistic!" << endl;
-    cout << endl << "Options:\n\t1-Total flights\n\t2-Number of flights to different countries\n\tb-Back\n\te-Exit" << endl;
+    cout << endl << "Options:\n\t1-Total flights\n\t2-Number of different countries reachable from airport\n\tb-Back\n\te-Exit" << endl;
 
     char option;
     while (true){
@@ -318,7 +318,7 @@ void getApMethods(){
                     cout << "There is no Airport with code <" << code << "> Try again!" << endl;
                     getApMethods();
                 }
-                //completar com função
+                Statistics::getNumOfReachableCitiesFromAirport(g,airportMap,code);
                 lastPage();
                 return getApMethods();
             case ('5'):
@@ -329,7 +329,7 @@ void getApMethods(){
                     cout << "There is no Airport with code <" << code << "> Try again!" << endl;
                     getApMethods();
                 }
-                //completar com função
+                Statistics::getNumOfReachableCountriesFromAirport(g,airportMap,code);
                 lastPage();
                 return getApMethods();
             case ('6'):
