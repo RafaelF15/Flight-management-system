@@ -14,7 +14,7 @@
 
 using namespace std;
 
-
+//Time complexity O(n)
 void Reading::readAirports(Graph<Airport> &g, unordered_map<string, Airport>& m, unordered_map<string,City>& cityMap) {
     string code, name, city, country, header;
     double latitude, longitude;
@@ -45,7 +45,7 @@ void Reading::readAirports(Graph<Airport> &g, unordered_map<string, Airport>& m,
         }
     }
 }
-
+//Time complexity O(n)
 void Reading::readAirlines(unordered_map<string, Airline>& m) {
     string code, name, callSign, country, header;
     ifstream file("../Data/airlines.csv");
@@ -62,7 +62,7 @@ void Reading::readAirlines(unordered_map<string, Airline>& m) {
         }
     }
 }
-
+//Time complexity O(n)
 void Reading::readFlights(Graph<Airport> &g, unordered_map<string, Airport>& m, unordered_map<string, Airline>& a) {
     string source, target, airline, header;
     ifstream file("../Data/flights.csv");
