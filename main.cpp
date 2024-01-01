@@ -606,8 +606,14 @@ int main() {
 
     */
     //Statistics::articulationPoints(&g, airportMap);
+    //Statistics::findDiameter(g);
 
-    welcomePage();
+
+    //Statistics::bestFlightAirportToAirportByCode(g, "OPO", "SSR", airportMap);
+    //Statistics::bestFlightCityToCity(g, "Porto", "Portugal", "London", "United Kingdom", cityMap, airportMap);
+    Statistics::bestFlightAirportToCity(g, "OPO", "London", "United Kingdom", cityMap, airportMap);
+    //Statistics::bestFlightCityToAirport(g, "London", "United Kingdom", "OPO" , cityMap, airportMap);
+    //welcomePage();
 
 
     return 0;
