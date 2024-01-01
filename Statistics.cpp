@@ -112,6 +112,66 @@ void Statistics::dfsReachAirportFromAirport(Vertex<Airport> *v, vector<Airport> 
     }
 }
 
+int Statistics::getNumOfReachableCitiesFromAirport(Graph<Airport> g, unordered_map<string, Airport> airportMap, string code) {
+    for (Vertex<Airport>* v : g.getVertexSet()) {
+        v->setVisited(false);
+    }
+
+    Vertex<Airport>* sourceAirport = g.findVertex(airportMap.at(code));
+
+    unordered_set<string> uniqueCities;
+
+    dfsReachCitiesFromAirport(sourceAirport, uniqueCities);
+
+    int numCities = static_cast<int>(uniqueCities.size());
+    cout << '\n' << "There are " << numCities << " reachable cities from: " << sourceAirport->getInfo().getName() << "." << endl;
+
+    return numCities;
+}
+
+void Statistics::dfsReachCitiesFromAirport(Vertex<Airport>* v, unordered_set<string>& uniqueCities) {
+    v->setVisited(true);
+
+    if (!v->getInfo().getCity().empty()) {
+        uniqueCities.insert(v->getInfo().getCity());
+    }
+
+    for (Edge<Airport> e : v->getAdj()) {
+        Vertex<Airport>* neighborAirport = e.getDest();
+        if (!neighborAirport->isVisited()) {
+            dfsReachCitiesFromAirport(neighborAirport, uniqueCities);
+        }
+    }
+}
+
+int Statistics::getNumOfReachableCountriesFromAirport(Graph<Airport> g, unordered_map<string, Airport> airportMap, string code) {
+    for (Vertex<Airport>* v : g.getVertexSet()) {
+        v->setVisited(false);
+    }
+
+    Vertex<Airport>* sourceAirport = g.findVertex(airportMap.at(code));
+    unordered_set<string> uniqueCountries;
+
+    dfsReachCountriesFromAirport(sourceAirport, uniqueCountries);
+
+    int numCountries = static_cast<int>(uniqueCountries.size());
+    cout << '\n' << "There are " << numCountries << " reachable countries from: " << sourceAirport->getInfo().getName() << "." << endl;
+
+    return numCountries;
+}
+
+void Statistics::dfsReachCountriesFromAirport(Vertex<Airport>* v, unordered_set<string>& uniqueCountries) {
+    v->setVisited(true);
+
+    uniqueCountries.insert(v->getInfo().getCountry());
+
+    for (Edge<Airport> e : v->getAdj()) {
+        Vertex<Airport>* neighborAirport = e.getDest();
+        if (!neighborAirport->isVisited()) {
+            dfsReachCountriesFromAirport(neighborAirport, uniqueCountries);
+        }
+    }
+}
 
 int Statistics::numReachableAirportsXFlights(Graph<Airport> g, unordered_map<string, Airport> airportMap, string code, int k) {
     vector<Airport> res;
