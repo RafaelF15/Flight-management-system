@@ -129,7 +129,7 @@ template<class T>
 void Edge<T>::setFlight(Flight flight) {
     Edge::flight = flight;
 }
-
+//Time Complexity: O(n)
 template <class T>
 Vertex<T> * Graph<T>::findVertex(const T &in) const {
     for (auto v : vertexSet)

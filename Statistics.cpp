@@ -5,28 +5,28 @@
 #include <algorithm>
 #include <cstdint>
 
+//Time complexity: O(1)
 int Statistics::getNumAirports(Graph<Airport> g) {
-    // tirei linha com um cout que estava a mais
     return g.getNumVertex();
 }
-
+//Time complexity: O(V + E)
 int Statistics::getNumFlights(Graph<Airport> g) {
-    // tirei linha com um cout que estava a mais
     int edgeCount = 0;
     for(Vertex<Airport>* v: g.getVertexSet()){
         edgeCount += v->getAdj().size();
     }
     return edgeCount;
 }
-
+//Time complexity: O(V)
 int Statistics::getNumFlightsFromAirport(Graph<Airport> g, unordered_map<string,Airport> airportMap ,string code) {
     Airport a = airportMap.at(code);
     Vertex<Airport>* v = g.findVertex(a);
     cout << '\n' << "There are " << v->getAdj().size() << " flights available from airport: '" << a.getName() << "' of code: " << a.getCode() << "." << endl;
     return v->getAdj().size();
 }
+//Time complexity: O(V + E)
 int Statistics::getNumAirlinesFromAirport(Graph<Airport> g, unordered_map<string,Airport> airportMap ,string code) {
-        set<string> aux = {};
+        unordered_set<string> aux = {};
         Airport a = airportMap.at(code);
         Vertex<Airport>* v = g.findVertex(a);
         for (auto e: v->getAdj()) {
@@ -35,7 +35,7 @@ int Statistics::getNumAirlinesFromAirport(Graph<Airport> g, unordered_map<string
         cout << '\n' << "There are " << aux.size() << " different airlines available from airport: '" << a.getName() << "' of code: " << a.getCode() << "." << endl;
         return aux.size();
 }
-
+//Time complexity: O(N)
 int Statistics::getNumFlightsPerCity(Graph<Airport> g, unordered_map<std::string, City> cityMap, string cityName, string country) {
     int numFlights = 0;
     string key = cityName + country;
@@ -48,13 +48,13 @@ int Statistics::getNumFlightsPerCity(Graph<Airport> g, unordered_map<std::string
     return numFlights;
 
 }
-
+//Time complexity: O(1)
 int Statistics::getNumFlightsPerAirline(unordered_map<std::string, Airline> a, string code) {
     int num = a.at(code).getNumFlights();
     cout << '\n' << "The airline " << a.at(code).getName() << " has " << num << " flights available.";
     return num;
 }
-
+//Time complexity: O(V + E)
 int Statistics::getNumFlightsFromAirportToDifferentCountries(Graph<Airport> g, unordered_map<string, Airport> airportMap, string code) {
     int count = 0;
     unordered_map<string,int> m;
@@ -69,7 +69,7 @@ int Statistics::getNumFlightsFromAirportToDifferentCountries(Graph<Airport> g, u
     cout << '\n' << "There are " << count << " possible countries reachable from " << a.getName() << " with only one flight.";
     return count;
 }
-
+//Time complexity: O(V^2)
 int Statistics::getNumFlightsFromCityToDifferentCountries(Graph<Airport> g, unordered_map<string, City> cityMap, string cityName, string country) {
     int numFlights = 0;
     unordered_map<string,int> m;
@@ -87,7 +87,7 @@ int Statistics::getNumFlightsFromCityToDifferentCountries(Graph<Airport> g, unor
     cout << '\n' << "There are " << numFlights << " reachable countries from " << cityName << "," << country << " with only one flight." << endl;
     return numFlights;
 }
-
+//Time complexity: O(V + E)
 int Statistics::getNumOfReachableAirportsFromAirport(Graph<Airport> g, unordered_map<string, Airport> airportMap, string code) {
     for(Vertex<Airport>* v1 : g.getVertexSet()){
         v1->setVisited(false);
@@ -101,7 +101,7 @@ int Statistics::getNumOfReachableAirportsFromAirport(Graph<Airport> g, unordered
     cout << '\n' << "There are " << count << " reachable airports from: " << s->getInfo().getName() << "." << endl;
     return count;
 }
-
+//Time complexity: O(V + E)
 void Statistics::dfsReachAirportFromAirport(Vertex<Airport> *v, vector<Airport> &airports) {
     v->setVisited(true);
     airports.push_back(v->getInfo());
@@ -111,7 +111,7 @@ void Statistics::dfsReachAirportFromAirport(Vertex<Airport> *v, vector<Airport> 
         }
     }
 }
-
+//Time complexity: O(V + E)
 int Statistics::getNumOfReachableCitiesFromAirport(Graph<Airport> g, unordered_map<string, Airport> airportMap, string code) {
     for (Vertex<Airport>* v : g.getVertexSet()) {
         v->setVisited(false);
@@ -128,7 +128,7 @@ int Statistics::getNumOfReachableCitiesFromAirport(Graph<Airport> g, unordered_m
 
     return numCities;
 }
-
+//Time complexity: O(V + E)
 void Statistics::dfsReachCitiesFromAirport(Vertex<Airport>* v, unordered_set<string>& uniqueCities) {
     v->setVisited(true);
 
@@ -143,7 +143,7 @@ void Statistics::dfsReachCitiesFromAirport(Vertex<Airport>* v, unordered_set<str
         }
     }
 }
-
+//Time complexity: O(V + E)
 int Statistics::getNumOfReachableCountriesFromAirport(Graph<Airport> g, unordered_map<string, Airport> airportMap, string code) {
     for (Vertex<Airport>* v : g.getVertexSet()) {
         v->setVisited(false);
@@ -159,7 +159,7 @@ int Statistics::getNumOfReachableCountriesFromAirport(Graph<Airport> g, unordere
 
     return numCountries;
 }
-
+//Time complexity: O(V + E)
 void Statistics::dfsReachCountriesFromAirport(Vertex<Airport>* v, unordered_set<string>& uniqueCountries) {
     v->setVisited(true);
 
@@ -172,7 +172,7 @@ void Statistics::dfsReachCountriesFromAirport(Vertex<Airport>* v, unordered_set<
         }
     }
 }
-
+//Time complexity: O(V + E)
 int Statistics::numReachableAirportsXFlights(Graph<Airport> g, unordered_map<string, Airport> airportMap, string code, int k) {
     vector<Airport> res;
     queue<pair<Vertex<Airport>*, int>> q;
@@ -205,7 +205,7 @@ int Statistics::numReachableAirportsXFlights(Graph<Airport> g, unordered_map<str
     return res.size()-1;
 }
 
-
+//Time complexity: O(V + E)
 pair<int, vector<Airport>> Statistics::maximumTripbfs(Graph<Airport> g, Vertex<Airport>* v) {
     queue<pair<Vertex<Airport>*, int>> q;
     for(Vertex<Airport>* v : g.getVertexSet()) v->setVisited(false);
@@ -237,7 +237,7 @@ pair<int, vector<Airport>> Statistics::maximumTripbfs(Graph<Airport> g, Vertex<A
     }
     return {distance, airports};
 }
-
+//Time complexity: O(V * (V + E))
 int Statistics::findDiameter(Graph<Airport> g) {
     int diameter = 0;
     vector<Airport> airports;
@@ -256,7 +256,7 @@ int Statistics::findDiameter(Graph<Airport> g) {
     }
     return diameter;
 }
-
+//Time complexity: O(V + E)
 int Statistics::articulationPoints(Graph<Airport> *g, unordered_map<string, Airport> airportMap) {
     unordered_set<string> res;
     int index = 1;
@@ -276,7 +276,7 @@ int Statistics::articulationPoints(Graph<Airport> *g, unordered_map<string, Airp
     }
     return res.size();
 }
-
+//Time complexity: O(V + E)
 void Statistics::articulationPointsDfs(Graph<Airport> *g, Vertex<Airport> *v, unordered_set<string> &l, int &i) {
     v->setNum(i);
     v->setLow(i);
@@ -305,7 +305,7 @@ void Statistics::articulationPointsDfs(Graph<Airport> *g, Vertex<Airport> *v, un
     }
     v->setProcessing(false);
 }
-
+//Time complexity: O(V + E)
 int Statistics::numReachableCitiesXFlights(Graph<Airport> g, unordered_map<string, Airport> airportMap, string code, int k) {
     vector<Airport> res;
     queue<pair<Vertex<Airport> *, int>> q;
@@ -343,71 +343,67 @@ int Statistics::numReachableCitiesXFlights(Graph<Airport> g, unordered_map<strin
              << k << " or less lay-overs." << endl;
         return cityCount-1;
     }
-    int Statistics::numReachableCountriesXFlights(Graph<Airport> g, unordered_map<string, Airport> airportMap, string code,
-                                              int k) {
-        unordered_set<string> uniqueCountries;
-        queue<pair<Vertex<Airport> *, int>> q;
+//Time complexity: O(V + E)
+int Statistics::numReachableCountriesXFlights(Graph<Airport> g, unordered_map<string, Airport> airportMap, string code,int k) {
+    unordered_set<string> uniqueCountries;
+    queue<pair<Vertex<Airport> *, int>> q;
 
-        for (Vertex<Airport> *v: g.getVertexSet()) {
-            v->setVisited(false);
+    for (Vertex<Airport> *v: g.getVertexSet()) {
+        v->setVisited(false);
+    }
+    Vertex<Airport> *s = g.findVertex(airportMap.at(code));
+    q.push({s, 0});
+    s->setVisited(true);
+    while (!q.empty()) {
+        Vertex<Airport> *v = q.front().first;
+        int currentDistance = q.front().second;
+        q.pop();
+        if (currentDistance <= k) {
+            uniqueCountries.insert(v->getInfo().getCountry());
         }
 
-        Vertex<Airport> *s = g.findVertex(airportMap.at(code));
-
-        q.push({s, 0});
-        s->setVisited(true);
-
-        while (!q.empty()) {
-            Vertex<Airport> *v = q.front().first;
-            int currentDistance = q.front().second;
-            q.pop();
-
-            if (currentDistance <= k) {
-                uniqueCountries.insert(v->getInfo().getCountry());
-            }
-
-            for (Edge<Airport> e: v->getAdj()) {
-                Vertex<Airport> *v1 = e.getDest();
-                if (!v1->isVisited()) {
-                    q.push({v1, currentDistance + 1});
-                    v1->setVisited(true);
-                }
+        for (Edge<Airport> e: v->getAdj()) {
+            Vertex<Airport> *v1 = e.getDest();
+            if (!v1->isVisited()) {
+                q.push({v1, currentDistance + 1});
+                v1->setVisited(true);
             }
         }
-
-        int countryCount = static_cast<int>(uniqueCountries.size());
-        cout << '\n' << "There are " << countryCount-1 << " countries reachable from " << s->getInfo().getName()
-             << " with " << k << " or less lay-overs." << endl;
-        return countryCount -1;
     }
 
-    vector<string> Statistics::getTopAirportsByFlights(Graph<Airport> g, int k) {
-        vector<string> topAirports;
+    int countryCount = static_cast<int>(uniqueCountries.size());
+    cout << '\n' << "There are " << countryCount-1 << " countries reachable from " << s->getInfo().getName()
+    << " with " << k << " or less lay-overs." << endl;
+    return countryCount -1;
+}
 
-        priority_queue<pair<int, Vertex<Airport> *>> pq;
+//Time complexity: O(N * log V)
+vector<string> Statistics::getTopAirportsByFlights(Graph<Airport> g, int k) {
+    vector<string> topAirports;
 
-        for (Vertex<Airport> *v: g.getVertexSet()) {
-            int numFlights = static_cast<int>(v->getAdj().size());
-            pq.push({numFlights, v});
-        }
+    priority_queue<pair<int, Vertex<Airport> *>> pq;
 
-        for (int i = 0; i < k && !pq.empty(); ++i) {
-            pair<int, Vertex<Airport> *> topAirport = pq.top();
-            pq.pop();
-
-            string airportInfo = to_string(i + 1) + ") " + topAirport.second->getInfo().getCode() + " - " +
-                                 topAirport.second->getInfo().getName();
-
-            topAirports.push_back(airportInfo);
-        }
-        for (const string &airportInfo: topAirports) {
-            cout << airportInfo << endl;
-        }
-        return topAirports;
+    for (Vertex<Airport> *v: g.getVertexSet()) {
+        int numFlights = static_cast<int>(v->getAdj().size());
+        pq.push({numFlights, v});
     }
 
+    for (int i = 0; i < k && !pq.empty(); ++i) {
+        pair<int, Vertex<Airport> *> topAirport = pq.top();
+        pq.pop();
+
+        string airportInfo = to_string(i + 1) + ") " + topAirport.second->getInfo().getCode() + " - " +topAirport.second->getInfo().getName();
+
+        topAirports.push_back(airportInfo);
+    }
+    for (const string &airportInfo: topAirports) {
+        cout << airportInfo << endl;
+    }
+    return topAirports;
+}
 
 
+//Time complexity: O(V + E)
 void Statistics::bestFlightAirportToAirport(Graph<Airport> g, std::string source, std::string dest, unordered_map<string, Airport>& airportMap, unordered_set<string>& excludedAirlines) {
     unordered_map<Vertex<Airport>*, int> distance;
     unordered_map<Vertex<Airport>*, Vertex<Airport>*> parent;
@@ -478,7 +474,7 @@ void Statistics::bestFlightAirportToAirport(Graph<Airport> g, std::string source
         cout << endl;
     }
 }
-
+//Time complexity: O(V + E)
 Flight Statistics::findFlight(Graph<Airport> g, std::string source, std::string dest, unordered_map<std::string, Airport> &airportMap, unordered_set<string>& excludedAirlines) {
 
     Vertex<Airport>* s = g.findVertex(airportMap.at(source));
@@ -490,7 +486,7 @@ Flight Statistics::findFlight(Graph<Airport> g, std::string source, std::string 
         }
     }
 }
-
+//Time complexity: O(A * B * (|V| + |E|)) -> A and B are the number of airports on the source and destination cities
 void Statistics::bestFlightCityToCity(Graph<Airport> g, std::string sourceCity, std::string SourceCountry, std::string destCity, std::string destCountry, unordered_map<string, City> cityMap, unordered_map<string,Airport> airportMap, unordered_set<string>& excludedAirlines) {
     string sourceKey = sourceCity + SourceCountry;
     string destKey = destCity + destCountry;
@@ -580,7 +576,7 @@ void Statistics::bestFlightCityToCity(Graph<Airport> g, std::string sourceCity, 
         }
     }
 }
-
+//Time complexity: O(A * (V + E))
 void Statistics::bestFlightAirportToCity(Graph<Airport> g, std::string source, std::string destCity, std::string destCountry, unordered_map<std::string, City> cityMap, unordered_map<std::string, Airport> airportMap, unordered_set<string>& excludedAirlines) {
     unordered_map<Vertex<Airport>*, int> distance;
     queue<Vertex<Airport>*> q;
@@ -674,6 +670,7 @@ void Statistics::bestFlightAirportToCity(Graph<Airport> g, std::string source, s
     }
 }
 
+//Time complexity: O(A * (V + E))
 void Statistics::bestFlightCityToAirport(Graph<Airport> g, std::string sourceCity, std::string sourceCountry, std::string dest, unordered_map<std::string, City> cityMap, unordered_map<std::string, Airport> airportMap, unordered_set<string>& excludedAirlines) {
     unordered_map<Vertex<Airport>*, int> distance;
     unordered_map<int, unordered_map<Vertex<Airport>*, Vertex<Airport>*>> paths;
