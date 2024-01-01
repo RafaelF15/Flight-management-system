@@ -413,7 +413,7 @@ void otherInfo(){
 
     cout << endl << "Chose the method!" << endl;
     cout << endl << "Options:\n\t1-Airports with top-K number of flights\n\t2-Articulation points\n\t3-Maximum trip\n\tb-Back\n\te-Exit"<<endl;
-
+    Graph<Airport> g1 = g;
     char option;
     string k;
     while (true){
@@ -435,7 +435,13 @@ void otherInfo(){
                 lastPage();
                 return otherInfo();
             case ('2'):
-                Statistics::articulationPoints(&g,airportMap);
+                for(Vertex<Airport>* v : g1.getVertexSet()){
+                    for(Edge<Airport> e : v->getAdj()){
+                        Flight t(e.getDest()->getInfo(), v->getInfo(), e.getFlight().getAirline());
+                        g1.addEdge(e.getDest()->getInfo(), v->getInfo(), t);
+                    }
+                }
+                Statistics::articulationPoints(&g1,airportMap);
                 lastPage();
                 return otherInfo();
             case ('3'):
