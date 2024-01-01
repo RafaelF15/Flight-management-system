@@ -28,6 +28,10 @@ public:
     static int getNumFlightsFromCityToDifferentCountries(Graph<Airport> g, unordered_map<string, City> cityMap, string cityName, string country);
     static int getNumOfReachableAirportsFromAirport(Graph<Airport> g, unordered_map<string,Airport> airportMap, string code);
     static void dfsReachAirportFromAirport(Vertex<Airport>* v, vector<Airport>& airports);
+    static int getNumOfReachableCitiesFromAirport(Graph<Airport> g, unordered_map<string,Airport> airportMap, string code);
+    static void dfsReachCitiesFromAirport(Vertex<Airport>* v, unordered_set<string>& uniqueCities);
+    static int getNumOfReachableCountriesFromAirport(Graph<Airport> g, unordered_map<string, Airport> airportMap, string code);
+    static void dfsReachCountriesFromAirport(Vertex<Airport>* v, unordered_set<string>& uniqueCountries);
     static int numReachableAirportsXFlights(Graph<Airport> g, unordered_map<string, Airport> airportMap, string code, int k);
     static pair<int, vector<Airport>> maximumTripbfs(Graph<Airport> g, Vertex<Airport>* v);
     static int findDiameter(Graph<Airport> g);
