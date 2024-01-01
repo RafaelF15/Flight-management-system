@@ -563,6 +563,7 @@ int main() {
 
 
     //Statistics::bestFlightAirportToAirportByCode(g, "OPO", "SSR", airportMap);
+    Statistics::bestFlightCityToCity(g, "Porto", "Portugal", "Jacksonville NC", "United States", cityMap, airportMap);
     //welcomePage();
 
 
