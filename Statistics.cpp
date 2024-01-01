@@ -378,19 +378,15 @@ void Statistics::bestFlightAirportToAirportByCode(Graph<Airport> g, std::string 
         for(Edge<Airport> e : v->getAdj()){
             Vertex<Airport>* v1 = e.getDest();
             if(!v1->isVisited()){
-                cout << '\n' <<"Visiting " << v1->getInfo().getCode() << endl;
                 if(distance[v] + 1 < distance[v1]){
                     parent[v1] = v;
-                    cout << v1->getInfo().getCode() << " new parent is: " << v->getInfo().getCode() << endl;
                     distance[v1] = distance[v] + 1;
-                    cout<< '\n' << v1->getInfo().getCode() << " :: " << distance[v1];
                 }
                 q.push(v1);
                 v1->setVisited(true);
             }
         }
     }
-    cout << '\n' << d->getInfo().getCode() << " has parent: " << parent[d]->getInfo().getCode() << endl;
     if (parent[d]) {
         stack<Vertex<Airport>*> path;
         Vertex<Airport>* current = d;
@@ -398,10 +394,25 @@ void Statistics::bestFlightAirportToAirportByCode(Graph<Airport> g, std::string 
             path.push(current);
             current = parent[current];
         }
-
+        cout << '\n' << "The best way to get to: " << airportMap.at(dest).getName() << " from " << airportMap.at(source).getName() << " is with the following flights: " << endl;
+        Vertex<Airport>* last = nullptr;
         while (!path.empty()) {
-            cout << path.top()->getInfo().getCode() << " ";
-            path.pop();
+            Vertex<Airport>* so;
+            Vertex<Airport>* de;
+            if(last == nullptr) {
+                so = path.top();
+                path.pop();
+                de = path.top();
+                path.pop();
+            }
+            else{
+                so = last;
+                de = path.top();
+                path.pop();
+            }
+            Flight f = findFlight(g, so->getInfo().getCode(), de->getInfo().getCode(), airportMap);
+            last = de;
+            f.printFlight();
         }
         cout << endl;
     }

@@ -562,7 +562,7 @@ int main() {
     //Statistics::findDiameter(g);
 
 
-    Statistics::bestFlightAirportToAirportByCode(g, "OPO", "CDG", airportMap);
+    //Statistics::bestFlightAirportToAirportByCode(g, "OPO", "SSR", airportMap);
     //welcomePage();
 
 
