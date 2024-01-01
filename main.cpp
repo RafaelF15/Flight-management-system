@@ -21,6 +21,7 @@ void airportStatistic();
 void getApMethods();
 void otherInfo();
 void search();
+void getFlights();
 void exitProgram();
 void lastPage();
 void credits();
@@ -517,6 +518,129 @@ void search(){
         }
     }
 }
+void getFlights() {
+    cout << endl << "=========GET FLIGHTS=========" << endl;
+    cout << endl;
+    cout << "Choose the type of origin:" << endl;
+    cout << endl << "Options:\n\t1-Airport\n\t2-City\n\tb-Back\n\te-Exit"<<endl;
+    int flag = 1;
+    char inputTypeO;
+    string code;
+    string city;
+    string country;
+    auto it = airportMap.find(code);
+    auto it1 = cityMap.find(city+country);
+    string inputOrigin;
+    int inputRadiusO = 0;
+    while (flag){
+        cout << "Choose option:";
+        cin >> inputTypeO;
+        switch (inputTypeO) {
+            case ('1'):
+                cout << "Insert the origin airport code:" << endl;
+                cin >> code;
+                it = airportMap.find(code);
+                if (it == airportMap.end()) {
+                    cout << "There is no airport with code <" << code << "> Try again!" << endl;
+                    getFlights();
+                }
+                flag = 0;
+                break;
+            case ('2'):
+                cout << "Insert the name of the origin city: "<< endl;
+                getline(cin>>ws, city);
+                cout << "Insert the country of the city you have chosen: " << endl;
+                getline(cin>>ws, country);
+                it1 = cityMap.find(city + country);
+                if (it1 == cityMap.end()) {
+                    cout << "The city inserted <" << city << "," << country << "> is not valid. Try again!" << endl;
+                    getFlights();
+                }
+                flag = 0;
+                break;
+            case ('b'):
+                return welcomePage();
+
+            case ('e'):
+                return exitProgram();
+
+            default:
+                cout << endl << "Not a valid option" << endl;
+        }
+    }
+
+    cout << endl;
+    cout << "Choose the type of destination:" << endl;
+    cout << endl << "Options:\n\t1-Airport\n\t2-City\n\tb-Back\n\te-Exit"<<endl;
+
+    char inputTypeD;
+    string inputDestination;
+    int inputRadiusD = 0;
+    int flag2 = 1;
+    while (flag2){
+        cout << "Choose option:";
+        cin >> inputTypeD;
+        switch (inputTypeD) {
+            case ('1'):
+                cout << "Insert the destination airport code:" << endl;
+                cin >> code;
+                it = airportMap.find(code);
+                if (it == airportMap.end()) {
+                    cout << "There is no airport with code <" << code << "> Try again!" << endl;
+                    getFlights();
+                }
+                flag2 = 0;
+                break;
+
+            case ('2'):
+                cout << "Insert the name of the destination city: "<< endl;
+                getline(cin>>ws, city);
+                cout << "Insert the country of the city you have chosen: " << endl;
+                getline(cin>>ws, country);
+                it1 = cityMap.find(city + country);
+                if (it1 == cityMap.end()) {
+                    cout << "The city inserted <" << city << "," << country << "> is not valid. Try again!" << endl;
+                    getFlights();
+                }
+                flag2 = 0;
+                break;
+            case ('b'):
+                return;
+
+            case ('e'):
+                return exitProgram();
+
+            default:
+                cout << endl << "Not a valid option" << endl;
+        }
+    }
+    /*
+    //filtros
+    cout << "Do you want an airline filter?" << endl;
+    cout << endl << "Options:\n\t1-Yes\n\t2-No\n\t" <<endl;
+    char yn;
+    vector<string> filters = {};
+    bool flag3 = true;
+    while(flag3) {
+        cout << "Choose option:";
+        cin >> yn;
+        switch (yn) {
+            case ('1'):
+                filters = createVec();
+                flag3 = 0;
+                break;
+            case ('2'):
+                flag3 = 0;
+                break;
+            default:
+                cout << "Not a valid option." << endl;
+        }
+    }
+
+    d_.flight(inputOrigin, inputDestination, inputTypeO-48, inputTypeD-48, filters,inputRadiusO ,inputRadiusD);
+    lastPage();
+    return welcomePage();*/
+}
 
 
 void lastPage() {
@@ -611,9 +735,9 @@ int main() {
 
     //Statistics::bestFlightAirportToAirportByCode(g, "OPO", "SSR", airportMap);
     //Statistics::bestFlightCityToCity(g, "Porto", "Portugal", "London", "United Kingdom", cityMap, airportMap);
-    Statistics::bestFlightAirportToCity(g, "OPO", "London", "United Kingdom", cityMap, airportMap);
+    //Statistics::bestFlightAirportToCity(g, "OPO", "London", "United Kingdom", cityMap, airportMap);
     //Statistics::bestFlightCityToAirport(g, "London", "United Kingdom", "OPO" , cityMap, airportMap);
-    //welcomePage();
+    welcomePage();
 
 
     return 0;

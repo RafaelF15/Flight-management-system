@@ -5,7 +5,7 @@
 #include "Statistics.h"
 #include <unordered_set>
 #include <algorithm>
-
+#include <cstdint>
 int Statistics::getNumAirports(Graph<Airport> g) {
     // tirei linha com um cout que estava a mais
     return g.getNumVertex();
