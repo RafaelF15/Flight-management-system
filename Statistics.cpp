@@ -4,6 +4,7 @@
 
 #include "Statistics.h"
 #include <unordered_set>
+#include <algorithm>
 
 int Statistics::getNumAirports(Graph<Airport> g) {
     // tirei linha com um cout que estava a mais
@@ -190,7 +191,7 @@ int Statistics::findDiameter(Graph<Airport> g) {
             start = v->getInfo();
         }
     }
-    cout << '\n' <<"The maximum trip passes trough: " << diameter << " airports starting at: " << start.getName() << " and ending at one of the following: " << endl;
+    cout << '\n' <<"The maximum trip passes trough " << diameter << " airports starting at " << start.getName() << " and ending at one of the following: " << endl;
     for(Airport a: airports){
         cout << '\n' << a.getName() << endl;
     }
@@ -346,3 +347,65 @@ int Statistics::numReachableCitiesXFlights(Graph<Airport> g, unordered_map<strin
         return topAirports;
     }
 
+
+
+void Statistics::bestFlightAirportToAirportByCode(Graph<Airport> g, std::string source, std::string dest, unordered_map<string, Airport>& airportMap) {
+    unordered_map<Vertex<Airport>*, Vertex<Airport>*> parent;
+    queue<Vertex<Airport>*> q;
+    for(Vertex<Airport>* b : g.getVertexSet()) b->setVisited(false);
+
+    Vertex<Airport>* s = g.findVertex(airportMap.at(source));
+    Vertex<Airport>* d = g.findVertex(airportMap.at(dest));
+
+    q.push(s);
+    s->setVisited(true);
+    parent[s] = nullptr;
+
+    bool destinationFound = false;
+
+    while (!q.empty() && !destinationFound){
+
+        Vertex<Airport>* v = q.front();
+        q.pop();
+
+
+        for(Edge<Airport> e : v->getAdj()){
+            Vertex<Airport>* v1 = e.getDest();
+            if(!v1->isVisited()){
+                parent[v1] = v;
+                q.push(v1);
+                v1->setVisited(true);
+                if (v1 == d) {
+                    destinationFound = true;
+                }
+            }
+        }
+    }
+    if (destinationFound && parent[d]) {
+        stack<Vertex<Airport>*> path;
+        Vertex<Airport>* current = d;
+        while (current != nullptr) {
+            path.push(current);
+            current = parent[current];
+        }
+
+        cout << "Shortest path from " << source << " to " << dest << ": ";
+        while (!path.empty()) {
+            cout << path.top()->getInfo().getCode() << " ";
+            path.pop();
+        }
+        cout << endl;
+    }
+}
+
+Flight Statistics::findFlight(Graph<Airport> g, std::string source, std::string dest, unordered_map<std::string, Airport> &airportMap) {
+
+    Vertex<Airport>* s = g.findVertex(airportMap.at(source));
+    Vertex<Airport>* d = g.findVertex(airportMap.at(dest));
+
+    for(Edge<Airport> e : s->getAdj()){
+        if(e.getDest() == d){
+            return e.getFlight();
+        }
+    }
+}

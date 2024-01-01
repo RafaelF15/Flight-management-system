@@ -559,8 +559,11 @@ int main() {
 
     */
     //Statistics::articulationPoints(&g, airportMap);
+    //Statistics::findDiameter(g);
 
-    welcomePage();
+
+    //Statistics::bestFlightAirportToAirportByCode(g, "OPO", "CGD", airportMap);
+    //welcomePage();
 
 
     return 0;

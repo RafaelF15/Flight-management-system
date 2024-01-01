@@ -35,7 +35,9 @@ public:
     static void articulationPointsDfs(Graph<Airport>* g, Vertex<Airport> *v, unordered_set<string>& l, int& i);
     static int numReachableCitiesXFlights(Graph<Airport> g, unordered_map<string, Airport> airportMap, string code, int k);
     static int numReachableCountriesXFlights(Graph<Airport> g, unordered_map<string, Airport> airportMap, string code, int k);
-
+    static void bestFlightAirportToAirportByCode(Graph<Airport> g, string source, string dest, unordered_map<string, Airport>& airportMap);
+    static Flight findFlight(Graph<Airport> g, string source, string dest, unordered_map<string, Airport>& airportMap);
+    static void bestFlightCityToCity(Graph<Airport> g, string sourceCity, string SourceCountry, string destCity, string destCountry);
     static vector<string> getTopAirportsByFlights(Graph<Airport> g, int k);
 };
 #endif //FLIGHT_MANAGEMENT_SYSTEM_STATISTICS_H
