@@ -576,8 +576,18 @@ void getFlights() {
     cout << "Choose the type of destination:" << endl;
     cout << endl << "Options:\n\t1-Airport\n\t2-City\n\tb-Back\n\te-Exit"<<endl;
 
+    auto it2 = airportMap.find(source_a);
+    auto it3 = cityMap.find(city+country);
+    auto it4 = airportMap.find(dest_a);
+    auto it5 = cityMap.find(city+country);
     char inputTypeD;
+    string cityb;
+    string countryb;
     string inputDestination;
+    string citya;
+    string countrya;
+
+
     int flag2 = 1;
     while (flag2){
         cout << "Choose option:";
@@ -592,11 +602,36 @@ void getFlights() {
                     getFlights();
                 }
                 if (a==0) {
+                    it2 = airportMap.find(source_a);
+                    it4 = airportMap.find(dest_a);
+                    citya = it2->second.getCity();
+                    countrya = it2->second.getCountry();
+                    cityb = it4->second.getCity();
+                    countryb = it4->second.getCountry();
                     Statistics::bestFlightAirportToAirport(g,source_a,dest_a,airportMap,excludedAirlines);
+                    it3 = cityMap.find(citya+countrya);
+                    it5 = cityMap.find(cityb+countryb);
+                    if (it2->second == it4->second) {
+                        cout << "You cannot find a flight to the same place of origin. Try again!";
+                    }
+                    else if (source_a == dest_a) {
+                        cout << "You cannot find a flight to the same place of origin. Try again!";
+                    }
                     excludedAirlines = {};
                 }
                 else if (a==1) {
                     Statistics::bestFlightCityToAirport(g,source_c,source_p, dest_a,cityMap, airportMap, excludedAirlines);
+                    it3 = cityMap.find(source_c+source_p);
+                    it2 = airportMap.find(dest_a);
+                    citya = it2->second.getCity();
+                    countrya = it2->second.getCountry();
+                    it5 = cityMap.find(citya+countrya);
+                    if (it3->second.getAirports()[0] == it2->second ) {
+                        cout << "You cannot find a flight to the same place of origin. Try again!";
+                    }
+                    else if (it2->second.getCity() + it2->second.getCountry() == source_c+source_p){
+                        cout << "You cannot find a flight to the same place of origin. Try again!";
+                    }
                     excludedAirlines = {};
                 }
                 lastPage();
@@ -613,10 +648,23 @@ void getFlights() {
                 }
                 if (a==0) {
                     Statistics::bestFlightAirportToCity(g,source_a,dest_c,dest_p,cityMap,airportMap,excludedAirlines);
+                    it3 = cityMap.find(dest_c+dest_p);
+                    it2 = airportMap.find(source_a);
+                    citya = it2->second.getCity();
+                    countrya = it2->second.getCountry();
+                    it5 = cityMap.find(citya+countrya);
+                    if (it3->second.getAirports()[0] == it2->second and it3->second.getAirports().size() == 1 and it5->second.getAirports().size()==1) {
+                        cout << "You cannot find a flight to the same place of origin. Try again!";
+                    }
                     excludedAirlines = {};
                 }
                 else if (a==1){
                     Statistics::bestFlightCityToCity(g,source_c,source_p,dest_c,dest_p,cityMap,airportMap,excludedAirlines);
+                    it3 = cityMap.find(source_c+source_p);
+                    it5 = cityMap.find(dest_c+dest_p);
+                    if (it3->second.getAirports()[0] == it5->second.getAirports()[0] and it3->second.getAirports().size() == 1 and it5->second.getAirports().size()==1) {
+                        cout << "You cannot find a flight to the same place of origin. Try again!";
+                    }
                     excludedAirlines = {};
                 }
                 lastPage();

@@ -475,9 +475,6 @@ void Statistics::bestFlightAirportToAirport(Graph<Airport> g, std::string source
         }
         cout << endl;
     }
-    else {
-    cout << "You cannot find a flight to the same airport of origin. Try again!";
-    }
 }
 
 Flight Statistics::findFlight(Graph<Airport> g, std::string source, std::string dest, unordered_map<std::string, Airport> &airportMap, unordered_set<string>& excludedAirlines) {
@@ -579,9 +576,6 @@ void Statistics::bestFlightCityToCity(Graph<Airport> g, std::string sourceCity, 
             }
             cout << endl;
         }
-        else {
-            cout << "You cannot find a flight to the same airport of origin. Try again!";
-        }
     }
 }
 
@@ -675,9 +669,6 @@ void Statistics::bestFlightAirportToCity(Graph<Airport> g, std::string source, s
             }
             cout << endl;
         }
-        else {
-        cout << "You cannot find a flight to the same airport of origin. Try again!";
-        }
     }
 }
 
@@ -767,9 +758,6 @@ void Statistics::bestFlightCityToAirport(Graph<Airport> g, std::string sourceCit
             f.printFlight();
         }
         cout << endl;
-    }
-    else {
-        cout << "You cannot find a flight to the same airport of origin. Try again!";
     }
 }
 
